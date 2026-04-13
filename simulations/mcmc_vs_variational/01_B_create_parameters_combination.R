@@ -1,0 +1,31 @@
+base_path = "/orfeo/cephfs/scratch/cdslab/scocomello/material_tickTack_2026/simulations/"
+
+# Define parameter values
+clusters <- c(1, 2, 3, 4, 5)
+segments <- c(10, 80)
+purity <- c(0.4, 0.8)
+coverage <- c(70)
+mutation_density <- c(1e-6, 7e-6)
+
+# Create full grid of combinations
+grid <- expand.grid(
+  clusters = clusters,
+  segments = segments,
+  purity = purity,
+  coverage = coverage,
+  density = mutation_density
+)
+
+# Reorder columns to match the input order in the next script 
+grid <- grid[, c("clusters", "segments", "purity", "coverage", "density")]
+
+
+# Write to comma-separated txt file
+write.table(
+  grid,
+  file = paste0(base_path,"parameter_combinations.txt"),
+  sep = ",",
+  row.names = FALSE,
+  col.names = FALSE,
+  quote = FALSE
+)

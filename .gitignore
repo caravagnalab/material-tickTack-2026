@@ -55,3 +55,11 @@ rsconnect/
 .quarto
 docs
 inst/doc
+
+#directories with the simulation results 
+simulations/mcmc_vs_variational/results_mcmcVS_variational_simulations/
+simulations/realistic_simulations/results_realistic_simulations/
+simulations/results_simulations/
+simulations/err/
+simulations/out/
+simulations/draft.R
