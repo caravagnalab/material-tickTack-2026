@@ -5,11 +5,11 @@ library(dplyr)
 library(data.table)
 library(parallel)
 
-base_dir <- "/orfeo/cephfs/scratch/cdslab/scocomello/material_tickTack_2026/simulations/"
+base_dir <- "/orfeo/cephfs/scratch/cdslab/scocomello/material-tickTack-2026/simulations/"
 source(paste0(base_dir, "/utils.R"))
 
 dir_PCAWG_smooth <- "/orfeo/cephfs/scratch/cdslab/scocomello/material_tickTack/PCAWG/fit_final/"
-output_dir <- "/orfeo/cephfs/scratch/cdslab/scocomello/material_tickTack_2026/simulations/data/"
+output_dir <- "/orfeo/cephfs/scratch/cdslab/scocomello/material-tickTack-2026/simulations/data/"
 
 MIN_MUTATIONS <- 10
 

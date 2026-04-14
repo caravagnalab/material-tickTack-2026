@@ -3,7 +3,7 @@ library(tickTack)
 library(ggplot2)
 library(dplyr)
 dir_PCAWG_smooth = "/orfeo/cephfs/scratch/cdslab/scocomello/material_tickTack/PCAWG/fit_final/"
-output_dir = "/orfeo/cephfs/scratch/cdslab/scocomello/material_tickTack_2026/simulations/data/"
+output_dir = "/orfeo/cephfs/scratch/cdslab/scocomello/material-tickTack-2026/simulations/data/"
 
 sample_dir_path <- list.files(dir_PCAWG_smooth)
 

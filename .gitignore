@@ -60,6 +60,10 @@ inst/doc
 simulations/mcmc_vs_variational/results_mcmcVS_variational_simulations/
 simulations/realistic_simulations/results_realistic_simulations/
 simulations/results_simulations/
+simulations/results_simulations_old/
 simulations/err/
 simulations/out/
 simulations/draft.R
+#directories with the results on PCAWG data
+PCAWG/Fit/inference_results/
+PCAWG/Fit/scripts/log/

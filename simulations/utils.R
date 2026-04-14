@@ -666,43 +666,40 @@ generate_multiplicities = function(k, tau, N_mutations, m=1) {
   } else {
     stop("k not recognized")
   }
-  muts <- c(rmultinom(n = 1, size = N_mutations, prob = c(n1, n2)))
-  list(n1 = muts[1], n2 = muts[2])
+  N1 = round(N_mutations * (n1 / (n1 + n2)), 0)
+  N2 = N_mutations - N1
+  # muts <- c(rmultinom(n = 1, size = N_mutations, prob = c(n1, n2)))
+  list(n1 = N1, n2 = N2)
 }
 
-k = "2:0"
-tau = .25
-N_mutations = 20
-
-n1 = 2 * m * (1 - tau)
-n2 = m * tau
-
-
-
-muts <- rmultinom(n = 1000, size = N_mutations, prob = c(n1, n2))
-
-20 * (n1 / (n1 + n2))
-20 * (n2 / (n1 + n2))
-
-rpois(1000, 20 * (n1 / (n1 + n2)))
-
-N2_sampled = c()
-N1_sampled = c()
-for (i in 1:1000) {
-  N1 = 0
-  N2 = 0
-  while (N1 + N2 != N_mutations) {
-    N1 = rpois(1, 20 * (n1 / (n1 + n2)))
-    N2 = rpois(1, 20 * (n2 / (n1 + n2)))
-  }
-  N2_sampled = c(N2_sampled, N2)
-  N1_sampled = c(N1_sampled, N1)
-}
-
-hist(N2_sampled)
-hist(N1_sampled)
-
-muts[1,] %>% hist()
+# k = "2:0"
+# tau = .25
+# N_mutations = 20
+# m = 1
+# muts <- rmultinom(n = 1000, size = N_mutations, prob = c(n1, n2))
+# 
+# 20 * (n1 / (n1 + n2))
+# 20 * (n2 / (n1 + n2))
+# 
+# rpois(1000, 20 * (n1 / (n1 + n2)))
+# 
+# N2_sampled = c()
+# N1_sampled = c()
+# for (i in 1:1000) {
+#   N1 = 0
+#   N2 = 0
+#   while (N1 + N2 != N_mutations) {
+#     N1 = rpois(1, 20 * (n1 / (n1 + n2)))
+#     N2 = rpois(1, 20 * (n2 / (n1 + n2)))
+#   }
+#   N2_sampled = c(N2_sampled, N2)
+#   N1_sampled = c(N1_sampled, N1)
+# }
+# 
+# hist(N2_sampled)
+# hist(N1_sampled)
+# 
+# muts[1,] %>% hist()
 
 
 

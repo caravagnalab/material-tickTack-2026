@@ -6,10 +6,10 @@
 #SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=1
 #SBATCH --mem=10gb
-#SBATCH --time=24:00:00
+#SBATCH --time=2:00:00
 #SBATCH --output=out/%a
 #SBATCH --error=err/%a
-#SBATCH --array=145,156,168,173,174,175,178,179,164,163,177
+#SBATCH --array=186,223
 
 module load R
 echo $SLURM_ARRAY_TASK_ID

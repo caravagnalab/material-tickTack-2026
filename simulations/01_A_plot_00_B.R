@@ -7,8 +7,8 @@ library(tidyr)
 library(patchwork)
 
 # Distributions were truncated at the 10th–90th percentiles to reduce the influence of extreme outliers
-base_dir = "/orfeo/cephfs/scratch/cdslab/scocomello/material_tickTack_2026/simulations/"
-data_dir = "/orfeo/cephfs/scratch/cdslab/scocomello/material_tickTack_2026/simulations/data/"
+base_dir = "/orfeo/cephfs/scratch/cdslab/scocomello/material-tickTack-2026/simulations/"
+data_dir = "/orfeo/cephfs/scratch/cdslab/scocomello/material-tickTack-2026/simulations/data/"
 
 info_parameters_PCAWG <- readRDS(paste0(data_dir,"/00_info_parameters_PCAWG_selectedWithMinMut10.rds"))
 

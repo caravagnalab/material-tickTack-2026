@@ -1,0 +1,83 @@
+cancer_type	cancer_type_short	CANCER_NAME	CANCER_TYPE
+Ovary-AdenoCA	OV-AU	Ovarian Epithelial Tumor	OVT
+NA	PBCA-DE	NA	NA
+Liver-HCC	LINC-JP	Hepatocellular Carcinoma	HCC
+NA	LGG-US	Low-Grade Glioma, NOS	LGGNOS
+Panc-Endocrine	PAEN-AU	Pancreatic Neuroendocrine Tumor	PANET
+Kidney-RCC	RECA-EU	Renal Clear Cell Carcinoma	CCRCC
+NA	EOPC-DE	Prostate Adenocarcinoma	PRAD
+NA	THCA-US	Well-Differentiated Thyroid Cancer	WDTC
+Prost-AdenoCA	PRAD-CA	Prostate Adenocarcinoma	PRAD
+NA	PRAD-CA	Prostate Adenocarcinoma	PRAD
+NA	COAD-US	Colorectal Adenocarcinoma	COADREAD
+Lymph-BNHL	MALY-DE	Non-Hodgkin Lymphoma	NHL
+NA	KIRC-US	Renal Clear Cell Carcinoma	CCRCC
+Liver-HCC	LIRI-JP	Hepatocellular Carcinoma	HCC
+NA	UCEC-US	Endometrial Carcinoma	UCEC
+NA	BRCA-US	Invasive Breast Carcinoma	BRCA
+NA	LUAD-US	Lung Adenocarcinoma	LUAD
+NA	PRAD-US	Prostate Adenocarcinoma	PRAD
+Panc-AdenoCA	PACA-CA	Pancreatic Adenocarcinoma	PAAD
+NA	PAEN-AU	Pancreatic Neuroendocrine Tumor	PANET
+Eso-AdenoCa	ESAD-UK	Esophageal Adenocarcinoma	ESCA
+NA	HNSC-US	Head and Neck Squamous Cell Carcinoma	HNSC
+Panc-AdenoCA	PACA-AU	Pancreatic Adenocarcinoma	PAAD
+NA	LIRI-JP	NA	NA
+NA	GBM-US	Glioblastoma Multiforme	GBM
+NA	LIHC-US	Hepatocellular Carcinoma	HCC
+NA	SARC-US	Soft Tissue	SOFT_TISSUE
+NA	READ-US	Colorectal Adenocarcinoma	COADREAD
+NA	CESC-US	Cervical Squamous Cell Carcinoma	CESC
+NA	SKCM-US	Melanoma	MEL
+Lymph-CLL	CLLE-ES	Chronic Lymphocytic Leukemia/Small Lymphocytic Lymphoma	CLLSLL
+NA	OV-US	Ovarian Epithelial Tumor	OVT
+NA	CLLE-ES	Chronic Lymphocytic Leukemia/Small Lymphocytic Lymphoma	CLLSLL
+Panc-Endocrine	PAEN-IT	Pancreatic Neuroendocrine Tumor	PANET
+NA	KICH-US	Chromophobe Renal Cell Carcinoma	CHRCC
+Skin-Melanoma	MELA-AU	Melanoma	MEL
+NA	GACA-CN	Stomach Adenocarcinoma	STAD
+Breast-AdenoCa	BRCA-UK	Invasive Breast Carcinoma	BRCA
+CNS-Medullo	PBCA-DE	Medulloblastoma	MBL
+NA	PAEN-IT	Pancreatic Neuroendocrine Tumor	PANET
+NA	LUSC-US	Lung Squamous Cell Carcinoma	LUSC
+NA	PRAD-UK	Prostate Adenocarcinoma	PRAD
+Prost-AdenoCA	PRAD-UK	Prostate Adenocarcinoma	PRAD
+NA	BLCA-US	Bladder Urothelial Carcinoma	BLCA
+NA	STAD-US	Stomach Adenocarcinoma	STAD
+Stomach-AdenoCA	GACA-CN	Stomach Adenocarcinoma	STAD
+NA	OV-AU	Ovarian Epithelial Tumor	OVT
+NA	KIRP-US	Papillary Renal Cell Carcinoma	PRCC
+NA	ESAD-UK	Esophageal Adenocarcinoma	ESCA
+NA	PACA-CA	Pancreatic Adenocarcinoma	PAAD
+Head-SCC	ORCA-IN	Head and Neck Squamous Cell Carcinoma	HNSC
+NA	PACA-AU	Pancreatic Adenocarcinoma	PAAD
+CNS-PiloAstro	PBCA-DE	Pilocytic Astrocytoma	PAST
+NA	MELA-AU	Melanoma	MEL
+NA	RECA-EU	Renal Clear Cell Carcinoma	CCRCC
+Lymph-NOS	MALY-DE	Malignant Lymphoma	MLYM
+NA	DLBC-US	Diffuse Large B-Cell Lymphoma, NOS	DLBCLNOS
+Myeloid-AML	LAML-KR	Acute Myeloid Leukemia	AML
+Biliary-AdenoCA	BTCA-SG	Cholangiocarcinoma	CHOL
+NA	LAML-KR	Acute Myeloid Leukemia	AML
+Prost-AdenoCA	EOPC-DE	Prostate Adenocarcinoma	PRAD
+Liver-HCC	LICA-FR	Hepatocellular Carcinoma	HCC
+NA	LINC-JP	Hepatocellular Carcinoma	HCC
+Biliary-AdenoCA	LIRI-JP	Cholangiocarcinoma	CHOL
+NA	LICA-FR	Hepatocellular Carcinoma	HCC
+NA	MALY-DE	Malignant Lymphoma	MLYM
+NA	ORCA-IN	Nasopharyngeal Carcinoma	NPC
+NA	BTCA-SG	Cholangiocarcinoma	CHOL
+Bone-Osteosarc	BOCA-UK	Osteosarcoma	OS
+Breast-DCIS	BRCA-UK	Invasive Breast Carcinoma	BRCA
+NA	BRCA-UK	Invasive Breast Carcinoma	BRCA
+Breast-AdenoCa	BRCA-EU	Invasive Breast Carcinoma	BRCA
+NA	BRCA-EU	Invasive Breast Carcinoma	BRCA
+Breast-LobularCa	BRCA-EU	Invasive Breast Carcinoma	BRCA
+NA	BOCA-UK	Osteosarcoma	OS
+NA	CMDI-UK	NA	NA
+Myeloid-AML	CMDI-UK	Acute Myeloid Leukemia	AML
+Myeloid-MPN	CMDI-UK	Myelodysplastic Syndromes	MDS
+Myeloid-MDS	CMDI-UK	Chronic Myelogenous Leukemia	CML
+Breast-DCIS	BRCA-EU	Invasive Breast Carcinoma	BRCA
+Bone-Cart	BOCA-UK	Osteosarcoma	OS
+Bone-Epith	BOCA-UK	Osteosarcoma	OS

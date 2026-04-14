@@ -5,8 +5,7 @@
 # coverage = 80
 # mutation_density = 2.e-07
 
-
-base_dir = "/orfeo/cephfs/scratch/cdslab/scocomello/material_tickTack_2026/simulations/"
+base_dir = "/orfeo/cephfs/scratch/cdslab/scocomello/material-tickTack-2026/simulations/"
 #!/usr/bin/env Rscript
 .libPaths("~/R/orfeo_R_4.4/")
 library(tickTack)
@@ -68,15 +67,14 @@ for (i.iter in 1:10) {
   
     
     m5 = cmdstanr::cmdstan_model(paste0(base_dir,"model/v5.stan"))
-    m = m5
 
-  ##################################### Inference variational ###################################################
+  ##################################### Inference variational H ###################################################
     # with n_clocks = 3 , n_events = 10, purity = 0.8, coverage = 60, mutation_density = 1e-6 the variational fit does not converge for K 0 5 
     # see how many times does this happens and in which conditions 
     
     library(loo)
     
-    fits_and_time_var <- model_selection_fit(K = 5, input_data,  m, inference_type = "variational")
+    fits_and_time_var <- model_selection_fit(K = 5, input_data, m5, inference_type = "variational")
     fits_var <- fits_and_time_var$fits
     timing_var <- fits_and_time_var$timing
     
@@ -89,6 +87,7 @@ for (i.iter in 1:10) {
                     aes(x = x, y = y, alpha = 0.3)) + theme_minimal() +
       xlab("tau inferred") +
       ylab(" tau simulated") +
+      ggtitle("Inferred tau hierarchical") +
       geom_point() 
     ggsave(paste0(sub_dir, "/fit_h_variational_BIC.png"), plot = p_fit, width = 10, height = 8)
     
@@ -96,32 +95,37 @@ for (i.iter in 1:10) {
     saveRDS(ms_results_var, paste0(sub_dir, "/ms_results_variational.rds"))
     saveRDS(timing_var, paste0(sub_dir, "/timing_variational.rds"))
     
-  ################################ Inference mcmc #####################################
+  ################################ Inference variational single segment #####################################
     
-    # fits_and_time_mcmc <- model_selection_fit(K = 5, input_data,  m, inference_type = "mcmc", tol_rel_obj = tolerance)
-    # fits_mcmc <- fits_and_time_mcmc$fits
-    # timing_mcmc <- fits_and_time_mcmc$timing
-    # 
-    # ms_results_mcmc = model_selection(fits_mcmc, input_data, K = 5)
-    # best_k_mcmc_BIC = ms_results_mcmc$best_K_BIC
-    # best_fit_mcmc_BIC = fits_mcmc[best_k_mcmc_BIC]
-    # seg_ass_mcmc_BIC <- ms_results_mcmc$seg_assignment_BIC
-    # 
-    # p_fit <- ggplot(data = data.frame(x = seg_ass_mcmc_BIC$tau_assignment, y = sim$true_taus), 
-    #                 aes(x = x, y = y, alpha = 0.3)) + theme_minimal() +
-    #   xlab("tau inferred") +
-    #   ylab(" tau simulated") +
-    #   geom_point() 
-    # ggsave(paste0(sub_dir, "/fit_h_mcmc_BIC.png"), plot = p_fit, width = 10, height = 8)
-    # 
-    # saveRDS(fits_mcmc, paste0(sub_dir, "/fits_mcmc.rds"))
-    # saveRDS(ms_results_mcmc, paste0(sub_dir, "/ms_results_mcmc.rds"))
-    # saveRDS(timing_mcmc, paste0(sub_dir, "/timing_variational.rds"))
-    # 
+    m_single = cmdstanr::cmdstan_model(paste0(base_dir,"model/tickTack_noclust.stan"))
+    
+    start_time <- Sys.time()
+    fit_single = m_single$variational(data = input_data, tol_rel_obj = 1e-4)
+    end_time <- Sys.time()
+    
+    elapsed <- as.numeric(difftime(end_time, start_time, units = "secs"))
+
+    tau_per_segment = fit_single$draws("tau", format = "matrix") %>% colMeans()
+    
+    timing_single <- rbind(data.frame(
+      method = "mcmc",
+      K = "all",
+      time_seconds = elapsed
+    ))
+    
+    p_fit_single <- ggplot(data = data.frame(x = tau_per_segment, y = sim$true_taus), 
+                    aes(x = x, y = y, alpha = 0.3)) + theme_minimal() +
+      xlab("tau inferred") +
+      ylab(" tau simulated") +
+      ggtitle("Inferred tau single segment") +
+      geom_point() 
+    
+    p_final <- (p_fit + p_fit_single)
+    ggsave(paste0(sub_dir, "/fit_HBIC_vs_single.png"), plot = p_final, width = 10, height = 4)
+    
+
     ################################## save the merged results ######################################
-    
-    # timing_all <- rbind(timing_var, timing_mcmc)
-    timing_all <- rbind(timing_var)
+    timing_all <- rbind(timing_var, timing_single)
     
     saveRDS(timing_all, paste0(sub_dir, "/timing_results.rds"))
   
@@ -134,10 +138,7 @@ for (i.iter in 1:10) {
       tau_var_ICL <- ms_results_var$seg_assignment_ICL$tau_assignment,
       tau_var_LOO <- ms_results_var$seg_assignment_LOO$tau_assignment,
       
-      # tau_mcmc_BIC <- ms_results_mcmc$seg_assignment_BIC$tau_assignment,
-      # tau_mcmc_AIC <- ms_results_mcmc$seg_assignment_AIC$tau_assignment,
-      # tau_mcmc_ICL <- ms_results_mcmc$seg_assignment_ICL$tau_assignment,
-      # tau_mcmc_LOO <- ms_results_mcmc$seg_assignment_LOO$tau_assignment,
+      tau_single = unname(tau_per_segment),
 
       failed_K_variational = paste(ms_results_var$failed_K, collapse = ";"),
       # failed_K_mcmc = paste(ms_results_mcmc$failed_K, collapse = ";"))

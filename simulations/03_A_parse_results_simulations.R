@@ -1,4 +1,4 @@
-base_dir = "/orfeo/cephfs/scratch/cdslab/scocomello/material_tickTack_2026/simulations/"
+base_dir = "/orfeo/cephfs/scratch/cdslab/scocomello/material-tickTack-2026/simulations/"
 #!/usr/bin/env Rscript
 .libPaths("~/R/orfeo_R_4.4/")
 
