@@ -126,7 +126,7 @@ p3 <- ggplot(results_plot, aes(x = factor(n_clusters), y = adj_RI, fill = criter
 p3
 
 p_final <- (p1 / p2 / p3) + plot_annotation(tag_levels = "a")
-ggplot2::ggsave(paste0(base_dir,"/plot/04_A_results_sim_all_scores.pdf"),plot = p_final, width = 13, height = 17)
+ggplot2::ggsave(paste0(base_dir,"/plot/04_A_results_sim_all_scores.pdf"),plot = p_final, width = 13, height = 22)
 
 
 ###### percentage of correct true k #####
