@@ -4,8 +4,8 @@
 #SBATCH --nodes=1
 #SBATCH --cpus-per-task=24
 #SBATCH --mem=70gb
-#SBATCH --time=2:00:00
-#SBATCH --array=500-1000
+#SBATCH --time=12:00:00
+#SBATCH --array=1-1000
 #SBATCH --output=log/output_%A_%a.out
 #SBATCH --error=log/error_%A_%a.err
 

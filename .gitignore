@@ -67,3 +67,5 @@ simulations/draft.R
 #directories with the results on PCAWG data
 PCAWG/Fit/inference_results/
 PCAWG/Fit/scripts/log/
+PCAWG/Fit_preparation_for_analysis/results/
+PCAWG/Fit/inference_results_5ncomponents/

@@ -1,0 +1,8 @@
+=== No available fit object ===
+5c3def3a-b515-41f6-8157-681b963534e7
+60413de1-6cd2-4f74-8180-3bdd394d6d16
+8ca665f8-fe78-48bf-8c0f-c606d92885d4
+98e8f23c-5970-4fce-9551-4b11a772fe1b
+f9dc999f-6dde-448d-9cf1-2897ddcf7b0b
+
+=== Available fit object but no results (draws_and_summary is NULL) ===

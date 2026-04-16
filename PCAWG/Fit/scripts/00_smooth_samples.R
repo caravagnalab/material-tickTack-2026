@@ -3,8 +3,13 @@ library("dplyr")
 library("ggplot2")
 source("/orfeo/cephfs/scratch/cdslab/scocomello/material-tickTack-2026/PCAWG/Fit/scripts/utils.R")
 data_dir = "/orfeo/cephfs/scratch/cdslab/scocomello/material-tickTack-2026/PCAWG/Fit/data/"
+output_dir = "/orfeo/cephfs/scratch/cdslab/scocomello/material-tickTack-2026/PCAWG/Fit/results/"
+info_WGD_PCAWG <- readRDS(paste0(data_dir,"info_WGD_PCAWG.rds"))
 
 info_df <- readRDS(paste0(data_dir,"info_cnaqc_samples.rds"))
+info_df <- info_df %>% 
+  select(-ploidy) %>% left_join(info_WGD_PCAWG %>% 
+                                  select(- purity), by=join_by("sample"=="sample_id"))
 
 n_samples = nrow(info_df %>% 
                    dplyr::select(sample) %>% 
@@ -64,4 +69,4 @@ info_df <- info_df %>% left_join(tab, by = c("cancer_type", "cancer_type_short")
 info_df %>% filter(is.na(IntoGen_cancer_name),
                    is_fittable_after_smoothing) %>% dplyr::select(ttype) %>% table
 
-saveRDS(info_df, paste0(data_dir,"/00_info_fit_smoot5Mb_1Mbml_15mm_0.4pi.RDS"))
+saveRDS(info_df, paste0(output_dir,"/00_info_fit_smoot5Mb_1Mbml_15mm_0.4pi.RDS"))
