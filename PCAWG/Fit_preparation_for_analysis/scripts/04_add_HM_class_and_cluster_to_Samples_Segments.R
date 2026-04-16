@@ -27,8 +27,20 @@ info_HM_segments = info_HM_segments %>%
   mutate(HM_cluster = ifelse(n_cna_events_per_timing_group == max(n_cna_events_per_timing_group), T, F)) %>%
   ungroup()
 
+Segments <- Segments %>% 
+  group_by(sample) %>% dplyr::mutate(clock_rank = dense_rank(clock_mean))
+
 Segments %>% filter(wgd_status != "wgd") %>% 
   group_by(sample) %>% dplyr::mutate(clock_rank = dense_rank(clock_mean)) %>% ungroup() %>% 
   group_by(sample, clock_rank) %>% summarise(mean(clock_mean))
+
+Segments_info_segments_HMcluster <- Segments %>% left_join(info_HM_segments %>% select(sample, clock_rank, n_cna_per_sample, n_clusters_per_sample,
+                                                               n_chr_affected_per_timing_group,
+                                                               frac_genome_affected_per_timing_group,
+                                                               n_cna_events_per_timing_group,
+                                                               mean_segment_length_per_timing_group,
+                                                               HM_cluster), 
+                                   by = join_by(sample, clock_rank))
+saveRDS(Segments_info_segments_HMcluster, "/orfeo/cephfs/scratch/cdslab/scocomello/material-tickTack-2026/PCAWG/Data/Segments.rds")
 
 
