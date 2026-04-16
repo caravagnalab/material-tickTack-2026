@@ -1,4 +1,3 @@
-
 #################################### original version ###############################
 
 rm(list=ls())
@@ -24,35 +23,35 @@ source("/orfeo/cephfs/scratch/cdslab/scocomello/material-tickTack-2026/PCAWG/Fit
 
 
 summary_gene_annotation <- lapply(1:nrow(info_fit), function(idx) {
-
+  
   cat(sprintf("Processing sample %d / %d (%.1f%%)\n", idx, nrow(info_fit), idx/nrow(info_fit)*100))
-
+  
   # sample_name <- "03c3c692-8a86-4843-85ae-e045f0fa6f88"
   # info_single <- info_fit%>%filter(sample == sample_name)
-
+  
   info_single <- info_fit[idx, ]
   summary_segments_single <- summary_segments %>% filter(sample == info_single$sample)
-
+  
   # sample_info <- info_single %>% dplyr:: select(best_K, CNAs, mean_mut_per_segment, median_mut_per_segment,
   # is_WGD, ttype, reference_genome, ploidy, purity, cancer_type, cancer_type_short, class)
-
+  
   # select the smoothed version of the fit otherwise the merhe with the timed segments would not be possible
   single_fit <- readRDS(paste0(main_path,info_single$sample,".rds"))
-
+  
   snvs_prepared <- single_fit$mutations
-
+  
   # PCAWG DRIVERS
   PCAWG_drivers_SNV <- PCAWG_drivers %>%
     filter(sample_id == info_single$sample) %>%
     filter(pos != "x") %>%
     mutate(mutation_id = paste0("chr",chr,":",pos))
-
+  
   # PCAWG CNA DRIVERS
   PCAWG_drivers_CNA <- PCAWG_drivers %>%
     filter(sample_id == info_single$sample) %>%
     filter(top_category == "CNA") %>%
     mutate(mutation_id = paste0("chr",chr,":",pos))
-
+  
   # Geni mutati, da controllare molteplicità della mutazione
   driver_snvs = snvs_prepared %>% mutate(mutation_id = paste0(chr,":",from),
                                          gene = if (!"gene" %in% colnames(.)) NA_character_ else gene) %>%
@@ -61,7 +60,7 @@ summary_gene_annotation <- lapply(1:nrow(info_fit), function(idx) {
     mutate( sample_id = info_single$sample, mutatation_status = "M")
   # uncomment 169- 186 to account for not annotated drivers
   # , mutation_call = "in PCAWG driver annotation")
-
+  
   # # PCAWG DRIVERS not in snvs table: Geni mutati, da controllare molteplicità della mutazione
   # driver_snvs_mut_id = snvs_prepared %>% mutate(mutation_id = paste0(chr,":",from),
   #                                        gene = if (!"gene" %in% colnames(.)) NA_character_ else gene) %>%
@@ -78,15 +77,15 @@ summary_gene_annotation <- lapply(1:nrow(info_fit), function(idx) {
   #
   #   driver_snvs <- bind_rows(driver_snvs, driver_snvs_missing)
   # }
-
-
+  
+  
   driver_cna = gene_coords_IntoGene_CI %>%
     filter(hgnc_symbol %in% PCAWG_drivers_CNA$gene) %>%
     mutate(mutation_status = "WT")
   # uncomment next line to account for not annotated drivers
   # , mutation_call = "in PCAWG")  # trovare le coordinate e dinferire karyo
-
-
+  
+  
   #driver_cna_final = data.frame()
   if(nrow(driver_cna) > 0){
     driver_cna_final = lapply(1:nrow(driver_cna), function(d){
@@ -107,9 +106,9 @@ summary_gene_annotation <- lapply(1:nrow(info_fit), function(idx) {
           PCAWG_drivers_CNA$sample_id[d][0]
         )
       }
-
+      
     }) %>% Reduce(rbind, .)
-
+    
   } else {
     driver_cna_final <- data.frame(
       ensembl_gene_id = character(),
@@ -129,8 +128,8 @@ summary_gene_annotation <- lapply(1:nrow(info_fit), function(idx) {
       stringsAsFactors = FALSE
     )
   }
-
-
+  
+  
   # CI
   ci_positions = gene_coords_IntoGene_CI %>% filter(hgnc_symbol %in% driver_list_IntoGene_CI$CI_genes)
   # CI mutations (exclude tail)
@@ -164,13 +163,13 @@ summary_gene_annotation <- lapply(1:nrow(info_fit), function(idx) {
       )
     }
   }) %>% Reduce(rbind, .)
-
+  
   ## Geni WT amplificati
   geni_amplificati_su_seg_timati = lapply(1:nrow(summary_segments_single), function(s){
     # print(s)
     from_s= strsplit(summary_segments_single$segment_name[s],"_")[[1]][2]
     to_s= strsplit(summary_segments_single$segment_name[s],"_")[[1]][3]
-
+    
     # seg_gene <- (gene_coords %>% mutate(chr = paste0("chr", chromosome_name)) %>% filter(
     #   chr %in% summary_segments_single$chr[s],
     #   start_position >= from_s,
@@ -180,7 +179,7 @@ summary_gene_annotation <- lapply(1:nrow(info_fit), function(idx) {
       chr %in% summary_segments_single$chr[s],
       as.numeric(start_position) >= as.numeric(from_s),
       as.numeric(end_position) <= as.numeric(to_s)) %>% dplyr::select(hgnc_symbol))
-
+    
     if(nrow(seg_gene) > 0) {
       cbind(
         summary_segments_single[s,],
@@ -192,28 +191,28 @@ summary_gene_annotation <- lapply(1:nrow(info_fit), function(idx) {
         seg_gene
       )
     }
-
+    
   }) %>% Reduce(rbind, .) #%>% dpl
   geni_amplificati_su_seg_timati = geni_amplificati_su_seg_timati %>% dplyr::select(segment_name, karyotype, hgnc_symbol, sample) %>% mutate(mutation_status = "WT")
-
-
+  
+  
   ## TABELLA TOTALE
   driver_snvs # annotati per PCAWG, amplificati o no, da annotare la multiplicity per amplificazioni timate
   driver_cna_final # annotati per PCAWG, da annotare la multiplicity per amplificazioni timate -> unire con info della mutazione
   ci_mutations  # mutazioni di geni CI che possono essere o non essere in CNA
   geni_amplificati_su_seg_timati
-
+  
   if(nrow(driver_snvs) > 0){
     driver_snvs <- filter_tail_mutations(driver_snvs, info_single$purity, exclude = FALSE)
   }
   if (nrow(ci_mutations) > 0){
     ci_mutations <- filter_tail_mutations(ci_mutations, info_single$purity, exclude = TRUE)
   }
-
+  
   all_genes = c(driver_snvs$gene, driver_cna_final$hgnc_symbol,
                 ci_mutations$gene, geni_amplificati_su_seg_timati$hgnc_symbol) %>% unique()
-
-
+  
+  
   drivers_df = lapply(1:length(all_genes), function(g){
     # print(g)
     final_df <- tibble::tibble(
@@ -227,12 +226,12 @@ summary_gene_annotation <- lapply(1:nrow(info_fit), function(idx) {
       mult_estimate = numeric(),
       timed = logical()
     )
-
+    
     is_mutated = nrow(driver_snvs %>% filter(gene == all_genes[g])) > 0
     is_driver_CNA = nrow(driver_cna_final %>% filter(hgnc_symbol == all_genes[g])) > 0
     is_CI_mutated = nrow(ci_mutations %>% filter(gene == all_genes[g])) > 0
     is_on_timed_segment = nrow(geni_amplificati_su_seg_timati %>% filter(hgnc_symbol == all_genes[g])) > 0 # check that there are some cases with M in P ann but mmissing + in timed segments
-
+    
     if (is_mutated) {
       final_df = driver_snvs %>% filter(gene == all_genes[g]) %>%
         dplyr::select(segment_id, gene, karyotype, sample_id, NV, DP, mutatation_status, mult_estimate)
@@ -251,7 +250,7 @@ summary_gene_annotation <- lapply(1:nrow(info_fit), function(idx) {
         # }
       }else{ final_df$timed = F}
     }
-
+    
     if (!is_mutated & is_driver_CNA){
       final_df = driver_cna_final %>% filter(hgnc_symbol == all_genes[g]) %>% mutate(gene = hgnc_symbol, karyotype = paste0(Major, ":", minor), sample_id = `PCAWG_drivers_CNA$sample_id[d]`,
                                                                                      NV = NA, DP = NA, mutatation_status = "CNA_driver") %>%
@@ -261,7 +260,7 @@ summary_gene_annotation <- lapply(1:nrow(info_fit), function(idx) {
       # , mutation_call = NA)
       if (is_on_timed_segment) final_df$timed = T else final_df$timed = F
     }
-
+    
     if (is_CI_mutated & !is_mutated & !is_driver_CNA){
       final_df = ci_mutations %>% filter(gene == all_genes[g]) %>% mutate(mutatation_status = "CI_M") %>%
         mutate(sample_id = sample) %>%
@@ -271,7 +270,7 @@ summary_gene_annotation <- lapply(1:nrow(info_fit), function(idx) {
       #   mutate(mutation_call = NA)
       if (is_on_timed_segment) final_df$timed = T else final_df$timed = F
     }
-
+    
     if (is_on_timed_segment & !is_CI_mutated & !is_mutated & !is_driver_CNA){
       final_df = geni_amplificati_su_seg_timati %>% filter(hgnc_symbol == all_genes[g]) %>%
         mutate(segment_id = paste0(strsplit(segment_name, "_")[[1]][1], ":",
@@ -283,7 +282,7 @@ summary_gene_annotation <- lapply(1:nrow(info_fit), function(idx) {
       #   # uncomment next line to account for not annotated drivers
       # , mutation_call = NA)
     }
-
+    
     if (nrow(final_df)==0) {
       final_df <- tibble::tibble(
         segment_id = character(),
@@ -305,15 +304,16 @@ summary_gene_annotation <- lapply(1:nrow(info_fit), function(idx) {
                         cancer_type_short = info_single$cancer_type_short,
                         cancer_type = info_single$cancer_type)
     return(final_df)
-
-  }) %>% Reduce(rbind,.)
-
-
-}) %>% Reduce(rbind,.)
+    
+  }) %>% do.call("bind_rows", .)
+  
+  
+}) %>% do.call("bind_rows", .)
 
 
 # merge with timed segments info and annotate class of gene
 gene_annotation <- summary_gene_annotation %>% rename(mutation_status = mutatation_status )
+
 
 summary_segments_merge <- summary_segments %>% dplyr::select(-c(karyotype))
 
@@ -327,28 +327,34 @@ gene_annotation <- gene_annotation %>% rowwise() %>% mutate(segment_name = paste
 ) %>% left_join(summary_segments_merge, by = c("segment_name", "sample"))
 
 
-saveRDS(gene_annotation, paste0(output_dir,"CHECK_tmp_03_gene_annotation_table.rds"))
+#### add sample level info #####
+Samples <- readRDS("/orfeo/cephfs/scratch/cdslab/scocomello/material-tickTack-2026/PCAWG/Data/Samples.rds")
+
+gene_annotation <- gene_annotation %>% dplyr::select(- c(colnames(Samples[2:27])))
+gene_annotation <- gene_annotation %>% left_join(Samples, by = join_by(sample == sample)) %>% dplyr::select(-chr)
+
+saveRDS(gene_annotation, paste0(output_dir,"tmp_03_gene_annotation_table.rds"))
 
 ####################################################################################
 
 # filter per ttype
 Intogen_drivers <- read.csv(paste0(data_dir, "2024-06-18_IntOGen-Drivers/Compendium_Cancer_Genes.tsv"), sep = "\t")
 
-gene_annotation <- readRDS(paste0(output_dir,"CHECK_tmp_03_gene_annotation_table.rds"))
+gene_annotation <- readRDS(paste0(output_dir,"tmp_03_gene_annotation_table.rds"))
 
 drivers_Int = Intogen_drivers %>% dplyr::select(SYMBOL, CANCER_TYPE)
 ttypes = drivers_Int$CANCER_TYPE %>% unique()
 
 annotation_new = lapply(ttypes, function(tt){
   genes_tt = drivers_Int %>% filter(CANCER_TYPE == tt) %>% pull(SYMBOL) %>% unique()
-
+  
   gene_annotation %>%
     filter(IntoGen_cancer_type == tt) %>%
     mutate(to_keep = ifelse( (gene %in% genes_tt) | (mutation_status!="WT"), T, F)) %>%
     filter(to_keep==T) %>% dplyr::select(!to_keep)
 }) %>% Reduce(rbind, .)
 
-saveRDS(annotation_new, paste0(output_dir,"03_gene_annotation_table.rds"))
+saveRDS(dplyr::as_tibble(annotation_new), paste0(output_dir,"03_gene_annotation_table.rds"))
 
 
 gene_annotation_table <- readRDS("/orfeo/cephfs/scratch/cdslab/scocomello/material-tickTack-2026/PCAWG/Fit_preparation_for_analysis/results/03_gene_annotation_table.rds")

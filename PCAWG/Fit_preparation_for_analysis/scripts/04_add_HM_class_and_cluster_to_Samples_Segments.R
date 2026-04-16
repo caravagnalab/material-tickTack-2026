@@ -21,6 +21,9 @@ saveRDS(info_fit_HM, "/orfeo/cephfs/scratch/cdslab/scocomello/material-tickTack-
 info_HM_segments <- readRDS(paste0(RES_FINAL_DIR, "00_HM_max_clusters.rds"))
 Segments <- readRDS("/orfeo/cephfs/scratch/cdslab/scocomello/material-tickTack-2026/PCAWG/Data/Segments.rds")
 
+Samples <- readRDS("/orfeo/cephfs/scratch/cdslab/scocomello/material-tickTack-2026/PCAWG/Data/Samples.rds")
+class(Segments)
+Segments <- Segments %>% left_join(Samples %>% dplyr::select(class,sample), by = join_by(sample))
 
 info_HM_segments = info_HM_segments %>% 
   group_by(sample) %>% 
@@ -35,12 +38,14 @@ Segments %>% filter(wgd_status != "wgd") %>%
   group_by(sample, clock_rank) %>% summarise(mean(clock_mean))
 
 Segments_info_segments_HMcluster <- Segments %>% left_join(info_HM_segments %>% select(sample, clock_rank, n_cna_per_sample, n_clusters_per_sample,
-                                                               n_chr_affected_per_timing_group,
-                                                               frac_genome_affected_per_timing_group,
-                                                               n_cna_events_per_timing_group,
-                                                               mean_segment_length_per_timing_group,
-                                                               HM_cluster), 
-                                   by = join_by(sample, clock_rank))
+                                                                                       n_chr_affected_per_timing_group,
+                                                                                       frac_genome_affected_per_timing_group,
+                                                                                       n_cna_events_per_timing_group,
+                                                                                       mean_segment_length_per_timing_group,
+                                                                                       HM_cluster), 
+                                                           by = join_by(sample, clock_rank))
+
+
+Segments_info_segments_HMcluster <- dplyr::as_tibble(Segments_info_segments_HMcluster)
+
 saveRDS(Segments_info_segments_HMcluster, "/orfeo/cephfs/scratch/cdslab/scocomello/material-tickTack-2026/PCAWG/Data/Segments.rds")
-
-
