@@ -13,21 +13,22 @@ data_dir = "/orfeo/cephfs/scratch/cdslab/scocomello/material-tickTack-2026/simul
 info_parameters_PCAWG <- readRDS(paste0(data_dir,"/00_C_info_parameters_PCAWG.rds"))
 
 df_long <- info_parameters_PCAWG %>% 
-  select(-sample_id) %>% pivot_longer(cols = everything(), names_to = "variable", values_to = "value")
+  dplyr::select(-sample_id) %>% pivot_longer(cols = everything(), names_to = "variable", values_to = "value")
 
-percentile_bounds <- df_long %>%
-  group_by(variable) %>%
-  summarise(
-    p10 = quantile(value, 0.10, na.rm = TRUE),
-    p90 = quantile(value, 0.90, na.rm = TRUE),
-    .groups = "drop"
-  )
+# percentile_bounds <- df_long %>%
+#   group_by(variable) %>%
+#   summarise(
+#     p10 = quantile(value, 0.10, na.rm = TRUE),
+#     p90 = quantile(value, 0.90, na.rm = TRUE),
+#     .groups = "drop"
+#   )
+# 
+# 
+# df_trimmed <- df_long %>%
+#   left_join(percentile_bounds, by = "variable") %>%
+#   filter(value >= p10, value <= p90)
 
-
-df_trimmed <- df_long %>%
-  left_join(percentile_bounds, by = "variable") %>%
-  filter(value >= p10, value <= p90)
-
+df_trimmed <- df_long
 
 stats_df <- df_trimmed %>%
   group_by(variable) %>%
@@ -181,55 +182,5 @@ plot(info_parameters_PCAWG$n_seg, info_parameters_PCAWG$median_DP)
 plot(info_parameters_PCAWG$n_seg, info_parameters_PCAWG$median_seg_length)
 
 
-
-
-
-
-########### plot tumor type distribution per PCAWG original classes #####################
-RES_FINAL_DIR = "/orfeo/cephfs/scratch/cdslab/scocomello/material_tickTack/PCAWG/results_analysis_final/"
-info_fit <- readRDS(paste0(RES_FINAL_DIR, "06_A_info_fit_with_class.rds"))
-
-info_fit %>% filter(Into)
-
-df <- info_fit %>% dplyr::select(is_WGD,ttype)
-
-df_summary <- df %>%
-  dplyr::count(ttype, is_WGD) %>%
-  group_by(ttype) %>%
-  mutate(total = sum(n)) %>%
-  ungroup()
-
-p <- ggplot(df_summary, aes(x = reorder(ttype, -total), y = n, color = is_WGD, fill = is_WGD, alpha = 0.3)) +
-  geom_bar(stat = "identity") +
-  scale_color_manual(values = c(
-    "no_wgd" = "#4C72B0", # Reddish
-    "wgd"     = "darkgoldenrod3"  # Teal
-  )) +
-  scale_fill_manual(values = c(
-    "no_wgd" = "#4C72B0", # Reddish
-    "wgd"     = "darkgoldenrod3"  # Teal
-  )) +
-  geom_text(aes(label = n),
-            position = position_stack(vjust = 0.5),
-            size = 3,
-            color = "white", fontface = "bold", alpha=1) + # Improved text visibility
-  labs(title = "Class frequency by PCAWG Tumor Type",
-       x = "Tumor Type",
-       y = "Number of Samples",
-       fill = "Class",
-       color = "Class") +
-  theme_minimal(base_size = 14) +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
-
-p <- p  +
-  theme(
-    strip.text = element_text(face = "bold"),
-    plot.title = element_text(face = "bold", hjust = 0.5)
-  )
-
-
-
-
-p_final <- (p_main / p_density | p) + plot_annotation(tag_levels = "a")
-ggplot2::ggsave(paste0(base_dir,"/plot/01_A_PCAWG_params_distribution_for_simulation_ttype_distribution.pdf"),plot = p_final, width = 15, height = 8)
-
+p_final <- (p_main / p_density ) + plot_annotation(tag_levels = "a")
+ggplot2::ggsave(paste0(base_dir,"/plot/01_A_PCAWG_params_distribution.pdf"),plot = p_final, width = 8, height = 12)

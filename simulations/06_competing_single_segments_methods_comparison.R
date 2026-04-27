@@ -1,9 +1,9 @@
-rm(list=ls())
-n_clocks = 5
-n_events = 20
-purity = 0.8
-coverage = 80
-mutation_density = 3.e-06
+# rm(list=ls())
+n_clocks = 1
+n_events = 5
+purity = 0.4
+coverage = 40
+mutation_density = 2.e-07
 
 base_dir = "/orfeo/cephfs/scratch/cdslab/scocomello/material-tickTack-2026/simulations/"
 #!/usr/bin/env Rscript
@@ -46,14 +46,11 @@ print(paste0("seed: ",seed))
 main_dir = paste0(base_dir,"/results_simulations/sim_",
                   n_clocks, "_", n_events, "_", purity, "_", coverage, "_", mutation_density, "/")
 
-if (!dir.exists(main_dir)) {
-  dir.create(main_dir)  
-}
+if (dir.exists(main_dir)) {
 
 for (i.iter in 1:10) {
   sub_dir = paste0(main_dir, i.iter)
-  if (!dir.exists(sub_dir)) {
-    dir.create(sub_dir)
+  if (dir.exists(sub_dir)) {
     
     sim <- readRDS(paste0(sub_dir, "/sim.rds")) 
     
@@ -65,6 +62,7 @@ for (i.iter in 1:10) {
     res_MutTime  <- safe_run(fit_MutTimeR(sim, pi), "fit_MutTimeR") # fails when there are no mutations pre or post event in the segments, so what can I do? why was it working ?
     
     if (!is.null(res_AmpTimeR) && !is.null(res_MutTime)) {
+      res <- readRDS(paste0(sub_dir,"/inference_results.rds"))
       merged_res <- dplyr::tibble(
         segment_idx = seq_len(n_events),
         true_tau = sim$true_taus,
@@ -84,16 +82,18 @@ for (i.iter in 1:10) {
         
       )
       
+      merged_res <- merged_res %>% left_join(res, by = join_by(true_tau, true_tau_cluster, segment_idx))
+      
       saveRDS(merged_res, file.path(sub_dir, "merged_res_competing_methods.rds"))
       
     }
     
-    close(error_log)    
   }
   
 }
 
 
+}
 
 
 

@@ -135,4 +135,4 @@ for (i in seq_along(sample_dir_path)) {
 
 info_parameters_PCAWG <- bind_rows(results_list)
 
-saveRDS(info_parameters_PCAWG, paste0(output_dir, "/00_info_parameters_PCAWG_before_smoothing.rds"))
+saveRDS(info_parameters_PCAWG, paste0(output_dir, "/00_C_info_parameters_PCAWG.rds"))

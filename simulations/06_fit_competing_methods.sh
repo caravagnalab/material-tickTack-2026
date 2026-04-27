@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --partition=EPYC
 #SBATCH --account=cdslab
-#SBATCH --job-name=01_sim_tickTack
+#SBATCH --job-name=06_sim_compare
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=1
@@ -9,7 +9,9 @@
 #SBATCH --time=2:00:00
 #SBATCH --output=out/%a
 #SBATCH --error=err/%a
-#SBATCH --array=232
+#SBATCH --array=119,123-125,149-154,157,169-178,186-193,201-239 
+
+#9,20,23-34,57-87,91,93,101,104,108,111,118, 
 
 module load R
 echo $SLURM_ARRAY_TASK_ID
@@ -33,4 +35,4 @@ echo $mutations_density
 
 echo "NR==${LINE_NUMBER}"
 
-Rscript 02_simulate_and_fit.R ${n_clocks} ${n_events} ${purity} ${coverage} ${mutations_density}
+Rscript 06_competing_single_segments_methods_comparison.R ${n_clocks} ${n_events} ${purity} ${coverage} ${mutations_density}

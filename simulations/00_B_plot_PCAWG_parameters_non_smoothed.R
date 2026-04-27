@@ -10,25 +10,35 @@ library(patchwork)
 base_dir = "/orfeo/cephfs/scratch/cdslab/scocomello/material-tickTack-2026/simulations/"
 data_dir = "/orfeo/cephfs/scratch/cdslab/scocomello/material-tickTack-2026/simulations/data/"
 
-info_parameters_PCAWG <- readRDS(paste0(data_dir,"/00_info_parameters_PCAWG_selectedWithMinMut10.rds"))
+info_parameters_PCAWG <- readRDS(paste0(data_dir,"/00_A_info_parameters_singleseg_PCAWG_BeforeSmoothing.rds"))
+info_parameters_PCAWG <- info_parameters_PCAWG %>% filter(n_mut > 3 ) %>% 
+  group_by(sample_id) %>% 
+  mutate(n_seg = n()) %>% ungroup()
+#                                                           len > 1e+06)
+info_parameters_PCAWG %>% dplyr::select(sample_id) %>% distinct()
+
+
+# info_parameters_PCAWG <- info_parameters_PCAWG %>% select(sample_id, median_DP, purity, median_seg_length, median_n_mut, n_seg) %>% 
+#   dplyr::filter(purity > 0.4)
 
 df_long <- info_parameters_PCAWG %>% 
-  dplyr::select(-sample_id) %>% pivot_longer(cols = everything(), names_to = "variable", values_to = "value")
+  # dplyr::filter(purity > 0.4, median_DP >= 40) %>%
+  dplyr::select(-c(sample_id,segment_id)) %>% pivot_longer(cols = everything(), names_to = "variable", values_to = "value")
 
-# percentile_bounds <- df_long %>%
-#   group_by(variable) %>%
-#   summarise(
-#     p10 = quantile(value, 0.10, na.rm = TRUE),
-#     p90 = quantile(value, 0.90, na.rm = TRUE),
-#     .groups = "drop"
-#   )
-# 
-# 
-# df_trimmed <- df_long %>%
-#   left_join(percentile_bounds, by = "variable") %>%
-#   filter(value >= p10, value <= p90)
+percentile_bounds <- df_long %>%
+  group_by(variable) %>%
+  summarise(
+    p10 = quantile(value, 0.10, na.rm = TRUE),
+    p90 = quantile(value, 0.90, na.rm = TRUE),
+    .groups = "drop"
+  )
 
-df_trimmed <- df_long
+
+df_trimmed <- df_long %>%
+  left_join(percentile_bounds, by = "variable") %>%
+  filter(value >= p10, value <= p90)
+
+# df_trimmed <- df_long
 
 stats_df <- df_trimmed %>%
   group_by(variable) %>%
@@ -90,7 +100,7 @@ p_main <- ggplot(df_trimmed, aes(x = variable, y = value)) +
   facet_wrap(~variable, scales = "free", ncol = 3) +
   
   labs(
-    title = "Trimmed distribution of PCAWG samples parameters (10–90%)",
+    title = "Distribution of PCAWG samples parameters (min number of mutations = 3, trimmed at 10%-90%)",
     subtitle = "Min, Q1, Median, Q3, Max shown",
     x = "",
     y = "Value"
@@ -152,7 +162,7 @@ p_density <- ggplot(df_trimmed, aes(x = value)) +
   facet_wrap(~variable, scales = "free", ncol = 3) +
   
   labs(
-    title = "Trimmed density of PCAWG samples parameters (10–90%)",
+    title = "Distribution of PCAWG samples parameters (min number of mutations = 3, trimmed at 10%-90%)",
     subtitle = "Dotted = Min/Max, Dashed = Quartiles, Red = Median",
     x = "Value",
     y = "Density"
@@ -174,13 +184,37 @@ p_density <- p_density +
   )
 
 ############# check for correlation between number of mutations and number of segments #################
-
 plot(info_parameters_PCAWG$n_seg, log(info_parameters_PCAWG$median_n_mut))
+fit <- lm(log(median_n_mut) ~ n_seg, data = info_parameters_PCAWG)
+abline(fit, col = "red", lwd = 2)
+
 plot(info_parameters_PCAWG$n_seg, log(info_parameters_PCAWG$median_density_mut))
+info_parameters_PCAWG$purity_group <- ifelse(info_parameters_PCAWG$median_seg_length > 0.6e+07, "High", "Low")
+info_parameters_PCAWG$purity_group <- as.factor(info_parameters_PCAWG$purity_group)
+ggplot(info_parameters_PCAWG, aes(x = n_seg, 
+                                  y = log(median_density_mut), 
+                                  color = purity_group)) +
+  geom_point(alpha = 0.6) +                  # Scatter plot points
+  geom_smooth(method = "lm", se = FALSE) +   # Fits and draws the two separate lines
+  labs(title = "Bimodal Regression Lines by Purity",
+       x = "n_seg",
+       y = "log(median_density_mut)",
+       color = "Purity Cluster") +
+  theme_minimal()
+
 plot(info_parameters_PCAWG$n_seg, info_parameters_PCAWG$purity)
+
 plot(info_parameters_PCAWG$n_seg, info_parameters_PCAWG$median_DP)
 plot(info_parameters_PCAWG$n_seg, info_parameters_PCAWG$median_seg_length)
+fit <- lm((median_seg_length) ~ n_seg, data = info_parameters_PCAWG)
+abline(fit, col = "red", lwd = 2)
+
+plot(info_parameters_PCAWG$median_seg_length, log(info_parameters_PCAWG$median_density_mut))
+fit <- lm(log(median_density_mut) ~ median_seg_length, data = info_parameters_PCAWG)
+abline(fit, col = "red", lwd = 2)
 
 
-p_final <- (p_main / p_density ) + plot_annotation(tag_levels = "a")
-ggplot2::ggsave(paste0(base_dir,"/plot/01_A_PCAWG_params_distribution_MinMut10.pdf"),plot = p_final, width = 8, height = 12)
+
+# p_final <- (p_main / p_density ) + plot_annotation(tag_levels = "a")
+p_final <- ( p_density ) + plot_annotation(tag_levels = "a")
+ggplot2::ggsave(paste0(base_dir,"/plot/00_B_PCAWG_params_BeforeSmoothing_trimmed.pdf"),plot = p_final, width = 12, height = 8)
