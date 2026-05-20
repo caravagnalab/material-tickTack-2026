@@ -23,7 +23,6 @@ methods <- c(
 )
 
 parameteres_combination <- list.files(paste0(base_dir, "/results_simulations/"))
-
 results_all <- map_dfr(parameteres_combination, function(sim_name) {
   
   sim_path <- paste0(base_dir, "/results_simulations/", sim_name)
@@ -79,23 +78,17 @@ results_all <- map_dfr(parameteres_combination, function(sim_name) {
     
     inference_results <- inference_results %>%
       mutate(
-        cluster_var_BIC = get_clusters(`tau_var_BIC <- ...`),
-        cluster_var_AIC = get_clusters(`tau_var_AIC <- ...`),
-        cluster_var_ICL = get_clusters(`tau_var_ICL <- ...`),
-        cluster_var_LOO = get_clusters(`tau_var_LOO <- ...`)
-        # ,
-        
-        # cluster_mcmc_BIC = get_clusters(`tau_mcmc_BIC <- ...`),
-        # cluster_mcmc_AIC = get_clusters(`tau_mcmc_AIC <- ...`),
-        # cluster_mcmc_ICL = get_clusters(`tau_mcmc_ICL <- ...`),
-        # cluster_mcmc_LOO = get_clusters(`tau_mcmc_LOO <- ...`)
+        cluster_var_BIC = get_clusters(`tau_var_BIC`),
+        cluster_var_AIC = get_clusters(`tau_var_AIC`),
+        cluster_var_ICL = get_clusters(`tau_var_ICL`),
+        cluster_var_LOO = get_clusters(`tau_var_LOO`)
       )
-    tau_cols <- paste0("tau_", methods, " <- ...")
+    tau_cols <- paste0("tau_", methods)
     true_K <- n_clusters
     
     map_dfr(methods, function(m) {
       
-      tau_col <- paste0("tau_", m, " <- ...")
+      tau_col <- paste0("tau_", m)
       cluster_col <- paste0("cluster_", m)
 
       tau_values <- inference_results[[tau_col]]

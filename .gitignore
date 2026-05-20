@@ -64,12 +64,18 @@ simulations/results_simulations_old/
 simulations/err/
 simulations/out/
 simulations/draft.R
+simulations/simulations_5_components_40segments/results_simulations_5ncomponents/
+simulations/simulations_5_components_40segments/
+simulations/results_summary/07_results_competing_methods_BIC.rds
+
 #directories with the results on PCAWG data
 PCAWG/Fit/inference_results/
 PCAWG/Fit/scripts/log/
 PCAWG/Fit/plot/
 PCAWG/Fit_preparation_for_analysis/results/
 PCAWG/Fit/inference_results_5ncomponents/
+PCAWG/Fit/inference_results_3ncomponents/
 PCAWG/Fit/plot/all_fit_ncomp5.pdf
 PCAWG/Fit/results/all_fit_VAFecdf_ncomp5.pdf
 PCAWG/Fit/results/all_fit_ncomp5.pdf
+PCAWG/Fit/plot_5components/

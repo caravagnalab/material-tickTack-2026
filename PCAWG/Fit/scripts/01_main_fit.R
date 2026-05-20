@@ -11,7 +11,7 @@ cat("subjob", chunk_id, "of", total_chunks, "\n")
 
 data_dir = "/orfeo/cephfs/scratch/cdslab/scocomello/material-tickTack-2026/PCAWG/Fit/data/"
 output_dir = "/orfeo/cephfs/scratch/cdslab/scocomello/material-tickTack-2026/PCAWG/Fit/results/"
-inference_results_dir = "/orfeo/cephfs/scratch/cdslab/scocomello/material-tickTack-2026/PCAWG/Fit/inference_results_5ncomponents/"
+inference_results_dir = "/orfeo/cephfs/scratch/cdslab/scocomello/material-tickTack-2026/PCAWG/Fit/inference_results_3ncomponents/"
 
 info_smooth_samples <- readRDS(paste0(output_dir,"00_info_fit_smoot5Mb_1Mbml_15mm_0.4pi.RDS"))
 fit_samples_info = info_smooth_samples %>% filter(is_fittable_after_smoothing == TRUE)
@@ -43,7 +43,7 @@ lapply(chunk_files, function(f){
                                          min_mutations_number = min_mutations_number,
                                          max_distance_smooth = max_distance_CNAqc, #1e7 in GEL
                                          min_segment_length = min_segment_length,
-                                         n_components = 5)
+                                         n_components = 5, local_executable = TRUE)
 
   
   saveRDS(fit_tickTack, paste0(inference_results_dir,basename(dirname(f)),".rds"))

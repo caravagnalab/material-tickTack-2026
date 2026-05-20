@@ -2,12 +2,13 @@
 library(dplyr)
 library(ggplot2)
 library(tidyr)
-dir = "~/Dropbox/TickTack 2026"
-drivers = readRDS(paste0(dir, "/Tables/PCAWG/Drivers.rds")) %>% select(
-  "segment_id","gene","karyotype","sample_id",
-  "mutatation_status","mult_estimate",
-  "timed", "sample" ,"clock_mean" , "clock_rank" ,"class",
-  "best_K", "IntoGen_cancer_type") 
+dir = "~/Docs/GitHub/material-tickTack-2026/PCAWG"
+drivers = readRDS(paste0(dir, "/Data/Drivers.rds")) 
+# %>% select(
+#   "segment_id","gene","karyotype","sample_id",
+#   "mutatation_status","mult_estimate",
+#   "timed", "sample" ,"clock_mean" , "clock_rank" ,"class",
+#   "best_K", "IntoGen_cancer_type") 
 
 ## 1. Frequency of amplified drivers per ttype (colored if mutated)
 drivers %>%

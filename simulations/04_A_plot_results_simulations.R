@@ -37,7 +37,7 @@ theme_plot <- function() {
 
 results_plot <- results_all %>%
   filter(status %in% c("OK", "ONLY_VARIATIONAL")) %>%
-  filter(mutation_density != 2e-07) %>%
+  # filter(mutation_density != 2e-07) %>%
   filter(criterion %in% c("BIC", "AIC")) %>%
   mutate(
     criterion         = factor(criterion, levels = c("BIC", "AIC", "ICL", "LOO")),
@@ -146,8 +146,8 @@ results_corr <- results_plot %>%
 
 p2 <- ggplot(results_corr,
              aes(x = factor(n_clusters), y = correlation, fill = criterion)) +
-  # geom_boxplot(alpha = 0.85, outlier.alpha = 0.25, outlier.size = 0.8,
-  #              linewidth = 0.4) +
+  geom_boxplot(alpha = 0.85, outlier.alpha = 0.25, outlier.size = 0.8,
+               linewidth = 0.4) +
   scale_fill_manual(values = palette_crit) +
   facet_grid(ne_label ~ md_label) +
   labs(
@@ -165,8 +165,8 @@ p2
 # ══════════════════════════════════════════════════════════════════════════════
 p3 <- ggplot(results_plot,
              aes(x = factor(n_clusters), y = adj_RI, fill = criterion)) +
-  # geom_boxplot(alpha = 0.85, outlier.alpha = 0.25, outlier.size = 0.8,
-  #              linewidth = 0.4) +
+  geom_boxplot(alpha = 0.85, outlier.alpha = 0.25, outlier.size = 0.8,
+               linewidth = 0.4) +
   scale_fill_manual(values = palette_crit) +
   facet_grid(ne_label ~ md_label) +
   labs(
@@ -234,8 +234,8 @@ p4
 # ── prepare data ──────────────────────────────────────────────────────────────
 results_bic <- results_all %>%
   filter(status %in% c("OK", "ONLY_VARIATIONAL")) %>%
-  filter(criterion == "BIC",
-         mutation_density != 2e-07) %>%
+  filter(criterion == "BIC") %>%
+  # filter(mutation_density != 2e-07) %>%
   mutate(
     n_clusters       = as.numeric(n_clusters),
     n_events         = as.numeric(n_events),

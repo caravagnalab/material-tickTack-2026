@@ -7,19 +7,20 @@
 # TMB plot
 rm(list=ls())
 library(tidyverse)
-install.packages("ggplot2")
+# install.packages("ggplot2")
 library(ggplot2)
 library(patchwork)
 library(dplyr)
 
 # TMB is typically calculated as mutations per megabase
-Samples <- readRDS("/orfeo/cephfs/scratch/cdslab/scocomello/material-tickTack-2026/PCAWG/Data/Samples.rds")
+# Samples <- readRDS("/orfeo/cephfs/scratch/cdslab/scocomello/material-tickTack-2026/PCAWG/Data/Samples.rds")
+Samples <- readRDS("~/Docs/GitHub/material-tickTack-2026/PCAWG/Data/Samples.rds")
 GENOME_SIZE_MB <- 3000
 
 tmb_data <- Samples %>%
   filter(!is.na(IntoGen_cancer_type)) %>%
   mutate(
-    n_snvs_filtered = map_int(cnaqc_path, function(path) {
+    n_snvs_filtered = purrr::map_int(cnaqc_path, function(path) {
       x <- readRDS(path)
       x$snvs %>%
         filter(mutation_type == "single base substitution") %>%  # adjust if needed

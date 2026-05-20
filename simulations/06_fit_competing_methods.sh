@@ -9,9 +9,7 @@
 #SBATCH --time=2:00:00
 #SBATCH --output=out/%a
 #SBATCH --error=err/%a
-#SBATCH --array=119,123-125,149-154,157,169-178,186-193,201-239 
-
-#9,20,23-34,57-87,91,93,101,104,108,111,118, 
+#SBATCH --array=1-144
 
 module load R
 echo $SLURM_ARRAY_TASK_ID
