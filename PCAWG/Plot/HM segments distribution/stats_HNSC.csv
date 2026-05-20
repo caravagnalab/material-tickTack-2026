@@ -1,0 +1,9 @@
+.y.,group1,group2,n1,n2,statistic,p,p.adj,p.adj.signif,metric,contrast,wgd_status
+log_len,Classic,WGD,29,40,0.9117460107822458,0.3619024370533558,0.3619024370533558,ns,seg_length,across_classes,NA
+log_snv,Classic,WGD,29,40,-5.310639527587129,1.0924121235207132e-7,1.0924121235207132e-7,****,n_snvs,across_classes,NA
+log_len,1,2,19,9,0.5940485910885656,0.5524796137452952,0.5524796137452952,ns,seg_length,within_class_clock,Classic
+log_len,1,3+,19,1,1.7351286714108807,0.08271801692783655,0.21610413381989896,ns,seg_length,within_class_clock,Classic
+log_len,2,3+,9,1,1.460803326992808,0.1440694225465993,0.21610413381989896,ns,seg_length,within_class_clock,Classic
+log_snv,1,2,19,9,-0.8200627048179892,0.41218036178467604,0.8724285338879881,ns,n_snvs,within_class_clock,Classic
+log_snv,1,3+,19,1,-0.48841171699809005,0.6252582441690097,0.8724285338879881,ns,n_snvs,within_class_clock,Classic
+log_snv,2,3+,9,1,-0.16057450813211455,0.8724285338879881,0.8724285338879881,ns,n_snvs,within_class_clock,Classic

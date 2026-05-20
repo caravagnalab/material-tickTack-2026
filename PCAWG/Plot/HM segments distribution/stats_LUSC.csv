@@ -1,0 +1,3 @@
+.y.,group1,group2,n1,n2,statistic,p,p.adj,p.adj.signif,metric,contrast
+log_len,Classic,WGD,3,47,0.4697792378682579,0.6385127493952927,0.6385127493952927,ns,seg_length,across_classes
+log_snv,Classic,WGD,3,47,1.1160871973009665,0.26438481177009615,0.26438481177009615,ns,n_snvs,across_classes
