@@ -13,7 +13,7 @@ library(fossil)
 
 
 
-model_selection_fit <- function(K = 5, input_data,  m, inference_type = "variational", tol_rel_obj = 0.0001){
+model_selection_fit <- function(K = 5, input_data = input_data, m, inference_type = "variational", tol_rel_obj = 0.0001){
   # Fit models for K = 1, 2, 3, 4, 5
   candidate_Ks = 1:K
   fits <- list()
@@ -1572,4 +1572,213 @@ plot_sim <- function(sim){
   
   return(p)
 }
+
+
+
+
+build_summarized_results <- function(fits_and_time_var, sim, K_max = 5) {
+  
+  library(dplyr)
+  library(tibble)
+  
+  fits_var <- fits_and_time_var$fits
+  S <- nrow(sim$cn)
+  
+  # CNA metadata (shared across all K)
+  cna_meta <- sim$cn %>%
+    dplyr::rename(from = startpos, to = endpos, Major = nMaj1_A, minor = nMin1_A) %>%
+    mutate(
+      segment_name          = paste0(chr, "_", from, "_", to),
+      karyotype             = paste0(Major, ":", minor),
+      segment_original_indx = row_number(),
+      segment_idx           = row_number()
+    )
+  
+  draws_and_summary <- vector("list", min(K_max, length(fits_var)))
+  
+  for (k in seq_len(min(K_max, length(fits_var)))) {
+    
+    message(sprintf("Processing K = %d ...", k))
+    
+    fit <- fits_var[[k]]
+    
+    # Extract tau and seg_probs draws — same as in model_selection
+    tau_draws   <- fit$draws("tau",       format = "matrix")
+    probs_draws <- fit$draws("seg_probs", format = "matrix")
+    
+    n_draws <- nrow(tau_draws)
+    
+    # Reshape seg_probs: [n_draws x S x k]
+    probs_arr  <- array(probs_draws, dim = c(n_draws, S, k))
+    
+    # Mean assignment probability per segment per cluster: [S x k]
+    mean_probs <- apply(probs_arr, c(2, 3), mean)
+    
+    # Hard assign each segment to its most probable cluster — exactly as model_selection does
+    hard_assign <- apply(mean_probs, 1, which.max)  # length S, values in 1:k
+    
+    # Tau summary stats per cluster: vectors of length k
+    mean_tau <- apply(tau_draws, 2, mean)
+    tau_med  <- apply(tau_draws, 2, median)
+    tau_q5   <- apply(tau_draws, 2, quantile, probs = 0.05)
+    tau_q95  <- apply(tau_draws, 2, quantile, probs = 0.95)
+    
+    # Each segment gets the exact tau value of its assigned cluster
+    # -> segments in the same cluster get identical values
+    clock_mean   <- mean_tau[hard_assign]
+    clock_median <- tau_med[hard_assign]
+    clock_low    <- tau_q5[hard_assign]
+    clock_high   <- tau_q95[hard_assign]
+    
+    # Build summarized_results
+    summarized_results <- cna_meta %>%
+      mutate(
+        segment_id   = as.double(segment_idx),
+        clock_mean   = clock_mean,
+        clock_median = clock_median,
+        clock_low    = clock_low,
+        clock_high   = clock_high
+      ) %>%
+      dplyr::select(
+        segment_original_indx,
+        segment_name,
+        segment_id,
+        karyotype,
+        chr,
+        clock_mean,
+        clock_median,
+        clock_low,
+        clock_high
+      )
+    
+    # Extract draws
+    draws <- fit$draws()
+    
+    # Build final list preserving timing metadata
+    draws_and_summary[[k]] <- list(
+      draws              = draws,
+      summarized_results = summarized_results,
+      method             = fits_and_time_var$draws_and_summary[[k]]$method,
+      K                  = fits_and_time_var$draws_and_summary[[k]]$K,
+      time_seconds       = fits_and_time_var$draws_and_summary[[k]]$time_seconds
+    )
+  }
+  
+  fits_and_time_var$draws_and_summary <- draws_and_summary
+  
+  return(fits_and_time_var)
+}
+
+plot_cnaqc_choose_K <- function(x, K, chromosomes = paste0('chr', c(1:22)), add_VAF_hist = FALSE, add_VAF_ecdf = FALSE,max_Y_height = 6, cn = 'absolute', highlight = x$most_prevalent_karyotype, highlight_QC = FALSE) {
+  
+  if (add_VAF_ecdf & add_VAF_hist) stop("Only one between 'add_VAF_ecdf' and 'add_VAF_hist' can be TRUE")
+  
+  cnaqc_x = CNAqc::init(mutations = x$mutations, cna = x$cna, purity = x$metadata$purity, ref = x$reference_genome)
+  
+  plot_CNA = plot_segments_tick_tack_CN(cnaqc_x, K = K) +
+    ggplot2::theme(legend.position='right', panel.spacing = ggplot2::unit(0, "lines")) +
+    ggplot2::labs(caption = NULL) +
+    ggplot2::theme(axis.title.x = ggplot2::element_blank())
+  
+  data_plot <- plot_segments_tick_tack_data(x, K = K) +
+    ggplot2::theme(legend.position='right',panel.spacing = ggplot2::unit(0, "lines")) +
+    ggplot2::theme(axis.title.x = ggplot2::element_blank())
+  
+  
+  timing_plot <- plot_segments_tick_tack(x, colour_by = "clock_mean", K = K) +
+    ggplot2::theme(legend.position='right',panel.spacing = ggplot2::unit(0, "lines"))
+  
+  my_palette <- c(  "#66a61e",  "#7570b3", "#e7298a", "#1b9e77", "#d95f02")
+  
+  if (add_VAF_ecdf | add_VAF_hist) {
+    if (add_VAF_ecdf) vaf_plot = tickTack:::plot_vaf_ecdf(x, K)
+    if (add_VAF_hist) vaf_plot = plot_vaf_mobsterlike(x, K)
+    
+    vaf_plot = vaf_plot + ggplot2::scale_fill_manual(values = my_palette) + ggplot2::scale_color_manual(values = my_palette)
+    
+    # segment_plot <- plot_segments_h(x, chromosomes, max_Y_height, cn, highlight, highlight_QC) +
+    #   ggplot2::theme(axis.title.x = element_blank())  # Keep chromosome labels only on this plot
+    
+    pA = timing_plot + CNAqc:::my_ggplot_theme() +
+      ggplot2::theme(
+        axis.ticks = ggplot2::element_blank(),
+        axis.title.x = ggplot2::element_blank(),
+        axis.text.x = ggplot2::element_blank(),
+        legend.position = "left"
+      )
+    pB = plot_CNA + CNAqc:::my_ggplot_theme() +
+      ggplot2::theme(
+        axis.ticks = ggplot2::element_blank(),
+        axis.title.x = ggplot2::element_blank(),
+        axis.text.x = ggplot2::element_blank(),
+        legend.position = "left"
+      )
+    pC = data_plot + CNAqc:::my_ggplot_theme() +
+      ggplot2::theme(legend.position = "left") +
+      ggplot2::labs(y = "VAF")
+    pD = vaf_plot + CNAqc:::my_ggplot_theme()
+    
+    des_left = "
+  AAAA#
+  AAAAE
+  AAAAE
+  AAAAE
+  AAAAE
+  BBBBE
+  BBBBE
+  BBBBE
+  CCCCE
+  CCCCE
+  DDDDD"
+    
+    pp = pA + pB + pC + patchwork::guide_area() + pD +
+      patchwork::plot_layout(design = des_left, guides = "collect") &
+      ggplot2::theme(legend.position = "bottom", legend.direction = "horizontal")
+    pp
+  } else {
+    
+    # segment_plot <- plot_segments_h(x, chromosomes, max_Y_height, cn, highlight, highlight_QC) +
+    #   ggplot2::theme(axis.title.x = element_blank())  # Keep chromosome labels only on this plot
+    
+    pA = timing_plot + CNAqc:::my_ggplot_theme() +
+      ggplot2::theme(
+        axis.ticks = ggplot2::element_blank(),
+        axis.title.x = ggplot2::element_blank(),
+        axis.text.x = ggplot2::element_blank(),
+        legend.position = "left"
+      )
+    pB = plot_CNA + CNAqc:::my_ggplot_theme() +
+      ggplot2::theme(
+        axis.ticks = ggplot2::element_blank(),
+        axis.title.x = ggplot2::element_blank(),
+        axis.text.x = ggplot2::element_blank(),
+        legend.position = "left"
+      )
+    pC = data_plot + CNAqc:::my_ggplot_theme() +
+      ggplot2::theme(legend.position = "left") +
+      ggplot2::labs(y = "VAF")
+    pD = ggplot2::ggplot() + ggplot2::theme_void() + CNAqc:::my_ggplot_theme()
+    
+    des_left = "
+  AAAA#
+  AAAAE
+  AAAAE
+  AAAAE
+  AAAAE
+  BBBBE
+  BBBBE
+  BBBBE
+  CCCCE
+  CCCCE
+  DDDDD"
+    
+    pp = pA + pB + pC + patchwork::guide_area() + pD +
+      patchwork::plot_layout(design = des_left, guides = "collect") &
+      ggplot2::theme(legend.position = "bottom", legend.direction = "horizontal")
+    pp
+  }
+  
+}
+
+
 

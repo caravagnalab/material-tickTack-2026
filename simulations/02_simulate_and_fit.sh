@@ -9,7 +9,7 @@
 #SBATCH --time=2:00:00
 #SBATCH --output=out/%a
 #SBATCH --error=err/%a
-#SBATCH --array=232
+#SBATCH --array=1-144
 
 module load R
 echo $SLURM_ARRAY_TASK_ID
