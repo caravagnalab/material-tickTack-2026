@@ -1,0 +1,6 @@
+Warning message:
+package ‘tidyverse’ was built under R version 4.4.1 
+Tumour type: LUAD
+Cohort rows for LUAD: 440 across 12 samples.
+Samples passing the 100-mutation early floor: 0 / 12 (dropped: 12)
+No samples pass the early-mutation floor for LUAD. Exiting cleanly.

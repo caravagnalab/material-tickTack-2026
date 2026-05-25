@@ -1,0 +1,10 @@
+Warning message:
+package ‘tidyverse’ was built under R version 4.4.1 
+Tumour type: MALY
+Cohort rows for MALY: 57802 across 70 samples.
+Samples passing the 100-mutation early floor: 12 / 71 (dropped: 59)
+--- SigProfiler: early (4580 rows) ---
+/orfeo/cephfs/scratch/cdslab/gsantacatterina/myconda/envs/process/lib/R/library/reticulate/python/rpytools/loader.py:120: UserWarning: A NumPy version >=1.22.4 and <2.3.0 is required for this version of SciPy (detected version 2.4.2)
+  return _find_and_load(name, import_)
+--- SigProfiler: all (8251 rows) ---
+Stage 01 (partition + matrices) done for tumour type: MALY

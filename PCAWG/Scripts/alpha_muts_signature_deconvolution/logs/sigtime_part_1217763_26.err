@@ -1,0 +1,6 @@
+Warning message:
+package ‘tidyverse’ was built under R version 4.4.1 
+Tumour type: KICH
+Cohort rows for KICH: 82 across 1 samples.
+Samples passing the 100-mutation early floor: 0 / 1 (dropped: 1)
+No samples pass the early-mutation floor for KICH. Exiting cleanly.

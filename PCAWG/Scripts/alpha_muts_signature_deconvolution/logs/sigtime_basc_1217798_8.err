@@ -1,0 +1,6 @@
+Warning message:
+package ‘tidyverse’ was built under R version 4.4.1 
+Tumour type: PAEN
+✔ Loading bascule. Support : <https://caravagnalab.github.io/bascule/>
+Samples in both early & all matrices: 4
+Fewer than 5 paired samples for PAEN — BASCULE fits would be unstable. Exiting.

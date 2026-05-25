@@ -1,0 +1,6 @@
+Warning message:
+package ‘tidyverse’ was built under R version 4.4.1 
+Tumour type: SKCM
+Cohort rows for SKCM: 3608 across 18 samples.
+Samples passing the 100-mutation early floor: 0 / 18 (dropped: 18)
+No samples pass the early-mutation floor for SKCM. Exiting cleanly.

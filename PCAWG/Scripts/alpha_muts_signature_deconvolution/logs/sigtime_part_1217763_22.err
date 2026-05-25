@@ -1,0 +1,10 @@
+Warning message:
+package ‘tidyverse’ was built under R version 4.4.1 
+Tumour type: BTCA
+Cohort rows for BTCA: 15840 across 9 samples.
+Samples passing the 100-mutation early floor: 2 / 9 (dropped: 7)
+--- SigProfiler: early (2554 rows) ---
+/orfeo/cephfs/scratch/cdslab/gsantacatterina/myconda/envs/process/lib/R/library/reticulate/python/rpytools/loader.py:120: UserWarning: A NumPy version >=1.22.4 and <2.3.0 is required for this version of SciPy (detected version 2.4.2)
+  return _find_and_load(name, import_)
+--- SigProfiler: all (3587 rows) ---
+Stage 01 (partition + matrices) done for tumour type: BTCA

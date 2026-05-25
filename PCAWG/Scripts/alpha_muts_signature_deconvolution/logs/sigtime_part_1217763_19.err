@@ -1,0 +1,6 @@
+Warning message:
+package ‘tidyverse’ was built under R version 4.4.1 
+Tumour type: STAD
+Cohort rows for STAD: 74 across 3 samples.
+Samples passing the 100-mutation early floor: 0 / 5 (dropped: 5)
+No samples pass the early-mutation floor for STAD. Exiting cleanly.

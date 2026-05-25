@@ -1,0 +1,6 @@
+Warning message:
+package ‘tidyverse’ was built under R version 4.4.1 
+Tumour type: READ
+Cohort rows for READ: 12 across 1 samples.
+Samples passing the 100-mutation early floor: 0 / 1 (dropped: 1)
+No samples pass the early-mutation floor for READ. Exiting cleanly.
