@@ -141,6 +141,16 @@ model_selection <- function(fits, input_data, K) {
     
     loo_res <- loo(log_lik_mat)
     elpd_loo <- loo_res$estimates["elpd_loo", "Estimate"]
+    p_loo_value <- loo_res$estimates["p_loo", "Estimate"]
+    p_loo_value
+    bad_pareto_approx_k_ids <- pareto_k_ids(loo_res, threshold = 0.67)
+    # plot(loo_res)
+
+    # if the problematic samples across k are the same, then the model selection can be quite reliable
+    # bad_k2 <- pareto_k_ids(loo_k2, 0.67)
+    # bad_k3 <- pareto_k_ids(loo_k3, 0.67)
+    # bad_k4 <- pareto_k_ids(loo_k4, 0.67)
+
     
     # ---------------- ICL ----------------
     
@@ -219,8 +229,190 @@ model_selection <- function(fits, input_data, K) {
 }
 
 
-
-
+model_selection_fit_init_mcmc <- function(
+    K              = 5,
+    input_data     = input_data,
+    m,
+    inference_type = "variational",
+    tol_rel_obj    = 0.0001,
+    vi_fits        = NULL,
+    vi_best_k      = NULL,       # best K from VI, required for mcmc_refined
+    n_chains       = 4,
+    iter_warmup    = 1000,
+    iter_sampling  = 1000,
+    iter_warmup_refined = 500,   # reduced warmup for VB-initialised MCMC
+    jitter_sd      = 0.05
+) {
+  
+  # --- validate inference_type -----------------------------------------
+  valid_types <- c("variational", "mcmc", "mcmc_refined")
+  if (!inference_type %in% valid_types) {
+    stop(sprintf(
+      "Unknown inference_type '%s'. Use one of: %s",
+      inference_type, paste(valid_types, collapse = ", ")
+    ))
+  }
+  
+  if (inference_type == "mcmc_refined" && is.null(vi_best_k)) {
+    stop("'mcmc_refined' requires 'vi_best_k' to be specified.")
+  }
+  
+  if (inference_type == "mcmc_refined" && is.null(vi_fits)) {
+    stop("'mcmc_refined' requires 'vi_fits' to be specified.")
+  }
+  
+  # --- candidate Ks ----------------------------------------------------
+  candidate_Ks <- if (inference_type == "mcmc_refined") {
+    k_range <- max(1, vi_best_k - 1):min(K, vi_best_k + 1)
+    message(sprintf(
+      "mcmc_refined: running MCMC for K = %s (best VI K=%d ± 1)",
+      paste(k_range, collapse = ", "), vi_best_k
+    ))
+    k_range
+  } else {
+    1:K
+  }
+  
+  fits <- list()
+  timing <- data.frame(
+    method        = character(),
+    K             = integer(),
+    time_seconds  = numeric(),
+    stringsAsFactors = FALSE
+  )
+  total_time <- 0
+  
+  # --- helper: extract VB posterior means as MCMC init ----------------
+  get_vb_init <- function(vi_fit, k, n_chains, jitter_sd) {
+    
+    vb_draws <- vi_fit$draws(format = "data.frame")
+    
+    # handle scalar (k=1) vs vector (k>1) parameter naming
+    tau_cols <- grepl("^tau(\\[|$)", colnames(vb_draws))
+    pi_cols  <- grepl("^pi(\\[|$)",  colnames(vb_draws))
+    
+    tau_mean <- as.numeric(colMeans(vb_draws[, tau_cols, drop = FALSE]))
+    pi_mean  <- as.numeric(colMeans(vb_draws[, pi_cols,  drop = FALSE]))
+    
+    lapply(seq_len(n_chains), function(i) {
+      
+      # tau: additive jitter, clamp to valid range
+      tau_jit <- tau_mean + rnorm(k, mean = 0, sd = jitter_sd)
+      tau_jit <- pmax(0.001, pmin(0.999, tau_jit))
+      
+      # pi: multiplicative jitter, floor then renormalise
+      pi_jit <- pi_mean * exp(rnorm(k, mean = 0, sd = jitter_sd))
+      pi_jit <- pmax(pi_jit, 1e-6)
+      pi_jit <- pi_jit / sum(pi_jit)
+      
+      list(tau = tau_jit, pi = pi_jit)
+    })
+  }
+  
+  # --- variational -----------------------------------------------------
+  if (inference_type == "variational") {
+    
+    for (k in candidate_Ks) {
+      stan_data   <- input_data
+      stan_data$K <- k
+      start_time  <- Sys.time()
+      
+      fit <- m$variational(data = stan_data, tol_rel_obj = tol_rel_obj)
+      
+      elapsed    <- as.numeric(difftime(Sys.time(), start_time, units = "secs"))
+      total_time <- total_time + elapsed
+      fits[[k]]  <- fit
+      
+      timing <- rbind(timing, data.frame(
+        method       = "variational",
+        K            = k,
+        time_seconds = elapsed
+      ))
+    }
+    
+    # --- mcmc (all K, random init) ---------------------------------------
+  } else if (inference_type == "mcmc") {
+    
+    for (k in candidate_Ks) {
+      stan_data   <- input_data
+      stan_data$K <- k
+      
+      if (!is.null(vi_fits) && !is.null(vi_fits[[k]])) {
+        message(sprintf("K=%d: initialising MCMC from VB posterior means", k))
+        init <- get_vb_init(vi_fits[[k]], k, n_chains, jitter_sd)
+      } else {
+        message(sprintf("K=%d: no VB fit provided, using random init", k))
+        init <- "random"
+      }
+      
+      start_time <- Sys.time()
+      
+      fit <- m$sample(
+        data            = stan_data,
+        chains          = n_chains,
+        iter_warmup     = iter_warmup,
+        iter_sampling   = iter_sampling,
+        parallel_chains = n_chains,
+        init            = init
+      )
+      
+      elapsed    <- as.numeric(difftime(Sys.time(), start_time, units = "secs"))
+      total_time <- total_time + elapsed
+      fits[[k]]  <- fit
+      
+      timing <- rbind(timing, data.frame(
+        method       = "mcmc",
+        K            = k,
+        time_seconds = elapsed
+      ))
+    }
+    
+    # --- mcmc_refined (best K ± 1, VB init, reduced warmup) -------------
+  } else if (inference_type == "mcmc_refined") {
+    
+    for (k in candidate_Ks) {
+      stan_data   <- input_data
+      stan_data$K <- k
+      
+      if (!is.null(vi_fits[[k]])) {
+        message(sprintf("K=%d: initialising MCMC from VB posterior means (reduced warmup=%d)", k, iter_warmup_refined))
+        init <- get_vb_init(vi_fits[[k]], k, n_chains, jitter_sd)
+      } else {
+        message(sprintf("K=%d: no VB fit for this K, using random init", k))
+        init <- "random"
+      }
+      
+      start_time <- Sys.time()
+      
+      fit <- m$sample(
+        data            = stan_data,
+        chains          = n_chains,
+        iter_warmup     = iter_warmup_refined,   # reduced warmup
+        iter_sampling   = iter_sampling,
+        parallel_chains = n_chains,
+        init            = init
+      )
+      
+      elapsed    <- as.numeric(difftime(Sys.time(), start_time, units = "secs"))
+      total_time <- total_time + elapsed
+      fits[[k]]  <- fit
+      
+      timing <- rbind(timing, data.frame(
+        method       = "mcmc_refined",
+        K            = k,
+        time_seconds = elapsed
+      ))
+    }
+  }
+  
+  timing <- rbind(timing, data.frame(
+    method       = paste0(inference_type, "_total"),
+    K            = NA,
+    time_seconds = total_time
+  ))
+  
+  return(list(fits = fits, timing = timing))
+}
 
 prepare_tickTack_input_data = function(sim, pi, min_mutations_number, alpha) {
   N_events = nrow(sim$cn)
