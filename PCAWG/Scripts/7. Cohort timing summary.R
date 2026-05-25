@@ -61,7 +61,7 @@ dir.create(out_dir_pseudotime, showWarnings = FALSE, recursive = TRUE)
 # PARAMETERS
 # ══════════════════════════════════════════════════════════════════════════════
 
-MIN_GENE_PROP <- 0.30
+MIN_GENE_PROP <- 0.10
 
 # ══════════════════════════════════════════════════════════════════════════════
 # WITHIN-SAMPLE CLOCK RANK  —  derived from Segments, not from Drivers
@@ -388,10 +388,13 @@ for (ct in cancer_type_list) {
               lo  = median(clock_low,  na.rm = TRUE),
               hi  = median(clock_high, na.rm = TRUE), .groups = "drop")
   
+  timing_df <- timing_df %>%
+    mutate(class = factor(class, levels = names(class_palette)))
+  
   p_timing <- ggplot(timing_df, aes(y = gene, x = clock_mean)) +
     geom_violin(fill = "#b2d8e8", colour = NA, alpha = 0.6,
                 scale = "width", trim = TRUE) +
-    geom_point(aes(colour = clock_mean), size = 1.2, alpha = 0.7,
+    geom_point(aes(colour = class), size = 1.2, alpha = 0.8,
                position = position_jitter(height = 0.15, seed = 42)) +
     geom_errorbarh(data = timing_summary,
                    aes(y = gene, xmin = lo, xmax = hi, x = NULL),
@@ -400,11 +403,12 @@ for (ct in cancer_type_list) {
                shape = 21, fill = "white", colour = "grey20", size = 2.5, stroke = 0.8) +
     scale_x_continuous(limits = c(0, 1), breaks = c(0, 0.5, 1),
                        labels = c("0", "0.5", "1")) +
-    scale_colour_gradientn(colours = c("#ffffcc","#41b6c4","#253494"),
-                           limits = c(0, 1), guide = "none") +
+    scale_colour_manual(values = class_palette, name = "Class", na.value = "grey80",
+                        drop = FALSE,
+                        guide = guide_legend(nrow = LEGEND_NROW, title.position = "top")) +
     scale_y_discrete(drop = FALSE) +
     labs(x = "Clock mean", y = NULL, title = "Timing\ndistribution") +
-    theme_minimal(base_size = 9) +
+    theme_minimal(base_size = 9) + two_row_legend_theme +
     theme(axis.text.y = element_blank(), axis.ticks.y = element_blank(),
           axis.text.x = element_text(size = 7),
           axis.ticks.x = element_line(linewidth = 0.3),
@@ -715,3 +719,4 @@ for (ct in cancer_type_list) {
 }
 
 message("\n✔  All done.")
+
