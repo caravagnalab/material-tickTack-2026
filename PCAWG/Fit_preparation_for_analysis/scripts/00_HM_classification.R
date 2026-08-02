@@ -12,7 +12,7 @@ Samples <- readRDS("/orfeo/cephfs/scratch/cdslab/scocomello/material-tickTack-20
 ####### info fit of WGD samples #####
 WGD_samples <- Samples %>% filter (wgd_status == "wgd")
 info_fit_WGD <- Samples %>% filter(sample %in% (WGD_samples
-                                                                                                      %>%pull(sample)))
+                                                %>%pull(sample)))
 
 ###### info fit of classical + HM ########
 other_samples <- Samples %>% filter (wgd_status == "no_wgd")
@@ -21,7 +21,7 @@ other_samples <- Samples %>% filter (wgd_status == "no_wgd")
 
 ##### collect features to be used in finding HM ####
 Segments <- readRDS("/orfeo/cephfs/scratch/cdslab/scocomello/material-tickTack-2026/PCAWG/Data/Segments.rds")
-Segments <- Segments %>% filter(sample %in% other_samples$sample)
+# Segments <- Segments %>% filter(sample %in% other_samples$sample)
 info_fit <- Segments %>% tidyr::separate(segment_name, into = c("chr", "from", "to"), sep = "_", remove = FALSE) %>%
   mutate(from = as.integer(from)) %>% 
   mutate(to = as.integer(to))
@@ -78,7 +78,11 @@ saveRDS(info_HM, paste0(RES_FINAL_DIR, "00_HM_max_clusters.rds"))
 
 ################################################################
 ########## select the group of segments of the clock which has the highest number of CN ###########
-# info_HM <- readRDS(paste0(RES_FINAL_DIR, "06_A_info_HM.rds"))
+# info_HM <- readRDS(paste0(RES_FINAL_DIR, "00_HM_max_clusters.rds"))
+
+info_HM <- info_HM %>% filter(sample %in% other_samples$sample)
+info_HM_WGD <- readRDS(paste0(RES_FINAL_DIR, "00_HM_max_clusters.rds")) %>% filter(sample %in% WGD_samples$sample)
+
 
 info_HM_maxgroup = info_HM %>% 
   group_by(sample) %>% 
@@ -89,9 +93,9 @@ info_HM_maxgroup = info_HM %>%
 ######################## KMEANS CLUSTERING #####################
 km_res = kmeans(info_HM_maxgroup %>%
                   dplyr::select( n_chr_affected_per_timing_group,
-                          frac_genome_affected_per_timing_group,
-                          n_cna_events_per_timing_group,
-                          ploidy), 2)$cluster
+                                 frac_genome_affected_per_timing_group,
+                                 n_cna_events_per_timing_group,
+                                 ploidy), 2)$cluster
 
 info_HM_maxgroup$class = as.factor(km_res)
 cluster_sizes <- table(info_HM_maxgroup$class)
@@ -102,54 +106,39 @@ info_HM_maxgroup <- info_HM_maxgroup %>%
 
 table <- info_HM_maxgroup
 
-png(paste0(PLOT_DIR,"00_genomic_features_byKmeansClass_HM_correlation.png"), width = 1200, height = 1000, res = 150)
+my_colors <- c("Classic" = "darkgrey", "HM" = "steelblue", "WGD" = "firebrick")
 
-if(T){
-  grp = table$HM_class
-  grp_levels = levels(grp)
-  cols = c("steelblue","firebrick")
-  names (cols) = grp_levels
-  panel.scatter = function(x, y, group, ... ){
-    # col = as. numeric(group)
-    points(x,y,col=cols[group],pch=19,cex=0.8, ... )
-  }
-  panel.density = function(x, group, ... ){
-    usr = par("usr"); on.exit(par(usr))
-    par(usr=c(usr[1:2],0,1.5))
-    for (g in levels(group) ){
-      d=density(x[group == g])
-      lines (d$x, d$y, col=cols[g],#col = which(levels(group) == g),
-             lwd=2)
-      
-    }
-  }
-  
-  op <- par(mar = c(4, 4, 2, 8))
-  pairs(
-    table[, c("n_chr_affected_per_timing_group",
-              "frac_genome_affected_per_timing_group",
+
+
+library(GGally)
+
+corr_plot <- ggpairs(
+  table,
+  columns = c("n_chr_affected_per_timing_group",
+              "frac_genome_affected_per_timing_group", 
               "n_cna_events_per_timing_group",
-              "ploidy")],
-    diag.panel = function(x, ... ) panel.density(x, table$HM_class),
-    lower.panel = function(x, y, ... ) panel.scatter(x, y, table$HM_class),
-    upper.panel = function(x, y, ... ) panel.scatter(x, y, table$HM_class)
-  )
-  legend(
-    "bottom",
-    inset = c(-0.15,0),
-    legend = levels(table$HM_class),
-    col = cols,#seq_along(levels(table$is_HM) ),
-    pch = 19,
-    pt.cex=1,
-    xpd=T,
-    bty = "n"
-  )
-}
-
-dev.off()
+              "ploidy"),
+  columnLabels = c("Chr affected",
+                   "Frac genome affected",
+                   "CNA events",
+                   "Ploidy"),
+  aes(color = HM_class, alpha = 0.3),
+  diag   = list(continuous = wrap("densityDiag")),
+  lower  = list(continuous = wrap("points", size = 0.5)),
+  upper  = list(continuous = wrap("cor", size = 3)),
+  legend = 1
+) +
+  scale_color_manual(values = my_colors) +
+  scale_fill_manual(values = my_colors) +
+  theme_minimal() +
+  theme(legend.position = "bottom")
 
 
-my_colors <- c("Classic" = "darkseagreen", "HM" = "brown4")
+ggsave(paste0(PLOT_DIR,"00_genomic_features_byKmeansClass_HM_correlation.pdf"), plot = corr_plot, width = 9, height =5, units="in", dpi=300)
+
+
+
+
 
 
 p1 = table %>% ggplot(aes(x= ploidy, color=HM_class, fill=HM_class, alpha = 0.3)) + 
@@ -157,7 +146,6 @@ p1 = table %>% ggplot(aes(x= ploidy, color=HM_class, fill=HM_class, alpha = 0.3)
   scale_color_manual(values = my_colors) +
   scale_fill_manual(values = my_colors) +
   theme_minimal() 
-theme_minimal() 
 p2 = table %>% ggplot(aes(x = n_chr_affected_per_timing_group, color=HM_class, fill=HM_class, alpha = 0.3) ) +
   geom_density() +
   scale_color_manual(values = my_colors) +
@@ -187,6 +175,91 @@ unique_plot <- (p1 + p2) / (p3 + p4) +
 ggsave(paste0(PLOT_DIR,"00_genomic_features_byKmeansClass_HM.pdf"), plot = unique_plot, width = 9, height =5, units="in", dpi=300)
 ################################################################
 ################################################################
+
+p1 = table %>% ggplot(aes (x= ploidy, color=HM_class, fill=HM_class, alpha = 0.3)) +
+  geom_histogram() +
+  scale_color_manual(values = my_colors) +
+  scale_fill_manual (values = my_colors) +
+  theme_minimal()
+p2 = table %>% ggplot(aes(x = n_chr_affected_per_timing_group, color=HM_class, fill=HM_class, alpha = 0.3) ) + geom_histogram() +
+  scale_color_manual(values = my_colors) +
+  scale_fill_manual (values = my_colors) +
+  theme_minimal()
+p3 = table %>% ggplot(aes(x = frac_genome_affected_per_timing_group, color=HM_class, fill=HM_class, alpha = 0.3)) +
+  geom_histogram() +
+  theme_minimal() +
+  scale_color_manual(values = my_colors) +
+  scale_fill_manual (values = my_colors) +
+  theme_minimal()
+p4 = table %>% ggplot(aes(x = n_cna_events_per_timing_group, color=HM_class, fill=HM_class, alpha = 0.3)) + geom_histogram() +
+  xlim(0,100) +
+  scale_color_manual(values = my_colors) +
+  scale_fill_manual (values = my_colors) +
+  theme_minimal()
+
+unique_plot <- (p1 + p2) / (p3 + p4) +
+  plot_layout(guides = "collect") +
+  plot_annotation(
+    title = "Genomic Distribution by HM Class",
+    subtitle = "Analysis of Ploidy, Chromosones, and CNA Events",
+    tag_levels = 'A' # Automatically adds A, B, C, D labels to each panel
+  )
+
+ggsave(paste0(PLOT_DIR,"00_genomic_features_byKmeansClass_HM_histogram.pdf"), plot = unique_plot, width = 9, height =5, units="in", dpi=300)
+
+################################################################
+info_HM_maxgroup_wgd = info_HM_WGD %>%
+  group_by(sample) %>%
+  filter(n_cna_events_per_timing_group == max(n_cna_events_per_timing_group)) %>%
+  ungroup() %>% mutate(HM_class = "WGD")
+table <- bind_rows(info_HM_maxgroup, info_HM_maxgroup_wgd)
+
+
+n_labels <- table %>%
+  group_by(HM_class) %>%
+  summarise(n = n_distinct(sample), .groups = "drop") %>%
+  mutate(label = paste0("n = ", n))
+
+hist_facet <- function(data, x_var, colors, n_labels = NULL, xlim_vals = NULL) {
+  
+  p <- data %>%
+    ggplot(aes(x = .data[[x_var]], fill = HM_class, color = HM_class)) +
+    geom_histogram(alpha = 0.3) +
+    facet_wrap(~ HM_class, ncol = 1, scales = "free_y") +
+    scale_color_manual(values = colors) +
+    scale_fill_manual(values = colors) +
+    theme_minimal()
+  
+  if (!is.null(n_labels)) {
+    p <- p + geom_text(
+      data = n_labels,
+      aes(label = label),
+      x = Inf, y = Inf,
+      hjust = 1.1, vjust = 1.5,
+      color = "black", size = 3, inherit.aes = FALSE
+    )
+  }
+  
+  if (!is.null(xlim_vals)) p <- p + xlim(xlim_vals)
+  return(p)
+}
+
+p1 <- hist_facet(table, "ploidy",                                my_colors, n_labels)  # only p1 gets labels
+p2 <- hist_facet(table, "n_chr_affected_per_timing_group",       my_colors)
+p3 <- hist_facet(table, "frac_genome_affected_per_timing_group", my_colors)
+p4 <- hist_facet(table, "n_cna_events_per_timing_group",         my_colors, xlim_vals = c(0, 100))
+
+unique_plot <- (p1 + p2) / (p3 + p4) +
+  plot_layout(guides = "collect") +
+  plot_annotation(
+    title = "Genomic Distribution by HM Class", 
+    subtitle = "Analysis of Ploidy, Chronosones, and CNA Events",
+    tag_levels = "A"
+  )
+
+ggsave (paste0(PLOT_DIR,"00_genomic_features_byKmeansClass_HM_histogram_WGD.pdf"),
+plot = unique_plot, width = 9, height = 8, units = "in", dpi = 300)
+
 
 
 

@@ -1,13 +1,21 @@
 # Process data to get input for signatures
 library(dplyr)
+library(RESOLVE)
 
 ### Input data
-pcawg_fits_dir = "~/dati_Orfeo/scocomello/material-tickTack-2026/PCAWG/Fit/inference_results_5ncomponents"
+# pcawg_fits_dir = "~/dati_Orfeo/scocomello/material-tickTack-2026/PCAWG/Fit/inference_results_5ncomponents"
+pcawg_fits_dir = "../Fit/inference_results_5ncomponents"
+
 pcawg_fits = list.files(pcawg_fits_dir)
 
-samples = readRDS("~/dati_Orfeo/antonelloa/material-tickTack-2026/PCAWG/Data/Samples.rds")
-segments = readRDS("~/dati_Orfeo/antonelloa/material-tickTack-2026/PCAWG/Data/Segments.rds")
+# samples = readRDS("~/dati_Orfeo/antonelloa/material-tickTack-2026/PCAWG/Data/Samples.rds")
+# segments = readRDS("~/dati_Orfeo/antonelloa/material-tickTack-2026/PCAWG/Data/Segments.rds")
+samples = readRDS("../Data/Samples.rds")
+segments = readRDS("../Data/Segments.rds")
+
+
 ttypes = samples %>% filter(!is.na(IntoGen_cancer_type)) %>% pull(IntoGen_cancer_type) %>% unique()
+ttypes <- "OVT"
 
 save_matrix = function(nmf_matrix,path,file_name){
   
@@ -58,7 +66,7 @@ for (t in ttypes){
   # cna_counts_by_cluster = RESOLVE::getCNCounts(cna_data_cluster)
   
   
-  tt_dir = paste0("~/dati_Orfeo/antonelloa/material-tickTack-2026/PCAWG/Analysis_results/CNA_Signatures/raw_data/", t)
+  tt_dir = paste0("../Analysis_results/CNA_Signatures/raw_data/", t)
   dir.create(tt_dir)
   saveRDS(cna_counts, file = paste0(tt_dir, "/CNV_counts.rds"))
   save_matrix(cna_counts,tt_dir,"CNV_counts.txt")
@@ -68,11 +76,20 @@ for (t in ttypes){
 
 ## Run signature deconvolution
 library(reticulate)
-use_condaenv(
-  "/Users/aliceantonello/Library/r-miniconda/envs/sigprofiler_arm64",
+# use_condaenv(
+#   "/Users/aliceantonello/Library/r-miniconda/envs/sigprofiler_arm64",
+#   required = TRUE
+# )
+
+
+use_condaenv( 
+  "/u/cdslab/scocomello/scratch/miniconda/envs/sigprofiler", 
   required = TRUE
 )
+
 # py_install("SigProfilerExtractor", envname = "sigprofiler_env", pip = TRUE)
+# py_install("SigProfilerExtractor", envname = "sigprofiler", pip = TRUE)
+
 sig_ex <- import("SigProfilerExtractor.sigpro")
 
 create_sigprofiler_dirs <- function(output, context = "CNV48", max_sigs = 10) {
@@ -106,14 +123,14 @@ create_sigprofiler_dirs <- function(output, context = "CNV48", max_sigs = 10) {
   system(paste("chmod -R 755", shQuote(output)))
 }
 
-counts_folder = "~/dati_Orfeo/antonelloa/material-tickTack-2026/PCAWG/Analysis_results/CNA_Signatures/raw_data"
+counts_folder = "../Analysis_results/CNA_Signatures/raw_data"
 
 for (t in ttypes){
   samples_tt = samples %>% filter(!is.na(IntoGen_cancer_type)) %>% filter(IntoGen_cancer_type == t) %>% pull(sample)
   if (length(samples_tt) > 2){
     x <- paste0(counts_folder,"/",t,"/CNV_counts.txt")
     
-    output = path.expand(paste0("~/dati_Orfeo/antonelloa/material-tickTack-2026/PCAWG/Analysis_results/CNA_Signatures/Sigprofiler/",t))
+    output = path.expand(paste0("../Analysis_results/CNA_Signatures/Sigprofiler/",t))
     create_sigprofiler_dirs(output, context = "CNV48", max_sigs = 10)
     
     sig_ex$sigProfilerExtractor(

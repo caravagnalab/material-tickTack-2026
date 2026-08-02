@@ -13,6 +13,18 @@ library(fossil)
 
 
 
+# ---------------------------------------------------------------------------
+# get_clusters(): map a per-segment fitted clock (tau_assignment) to integer
+# cluster labels. Segments sharing the same inferred clock (to 6 dp) get the
+# same id. Mirrors the definition in 07_parse_results_competing_methods.R so
+# the limitation-analysis drivers (baseline / masking / kclusters / borrowing)
+# can read hard partitions from model_selection() output without sourcing 07.
+# ---------------------------------------------------------------------------
+get_clusters <- function(tau) {
+  as.numeric(factor(round(tau, 6)))
+}
+
+
 model_selection_fit <- function(K = 5, input_data = input_data, m, inference_type = "variational", tol_rel_obj = 0.0001){
   # Fit models for K = 1, 2, 3, 4, 5
   candidate_Ks = 1:K
@@ -34,7 +46,7 @@ model_selection_fit <- function(K = 5, input_data = input_data, m, inference_typ
       start_time <- Sys.time()
       
       fit = m$variational(data = input_data, tol_rel_obj = tol_rel_obj)
-
+      
       end_time <- Sys.time()
       elapsed <- as.numeric(difftime(end_time, start_time, units = "secs"))
       total_time <- total_time + elapsed
@@ -145,12 +157,12 @@ model_selection <- function(fits, input_data, K) {
     p_loo_value
     bad_pareto_approx_k_ids <- pareto_k_ids(loo_res, threshold = 0.67)
     # plot(loo_res)
-
+    
     # if the problematic samples across k are the same, then the model selection can be quite reliable
     # bad_k2 <- pareto_k_ids(loo_k2, 0.67)
     # bad_k3 <- pareto_k_ids(loo_k3, 0.67)
     # bad_k4 <- pareto_k_ids(loo_k4, 0.67)
-
+    
     
     # ---------------- ICL ----------------
     
@@ -436,7 +448,7 @@ prepare_tickTack_input_data = function(sim, pi, min_mutations_number, alpha) {
   if(!nrow(mutations)*ncol(mutations)){
     stop("No mutations have been called on this CNAqc object.")
   }
-
+  
   # cna <- CNAqc::CNA(x)
   segments <- tickTack:::CNA(x)
   
@@ -448,7 +460,7 @@ prepare_tickTack_input_data = function(sim, pi, min_mutations_number, alpha) {
   purity = x$metadata$purity
   
   accepted_data <- tickTack:::prepare_input_data(mutations, segments, purity, possible_k = c("2:1", "2:2", "2:0"), alpha = alpha, min_mutations_number = min_mutations_number)
-
+  
   accepted_data
 }
 
@@ -897,11 +909,15 @@ generate_multiplicities = function(k, tau, N_mutations, m=1) {
 
 
 
-simulate_dataset = function(N_events, N_clocks, mutation_density, pi, coverage, sigma_tau = .01, min_dist = .1) {
+simulate_dataset = function(N_events, N_clocks, mutation_density, pi, coverage, sigma_tau = .01, min_dist = .1, taus_fixed = NULL) {
   
-  repeat {
-    taus_sampled <- runif(N_clocks, 0.01, 0.99)
-    if (all(diff(sort(taus_sampled)) >= min_dist)) break
+  if (is.null(taus_fixed)) {
+    repeat {
+      taus_sampled <- runif(N_clocks, 0.01, 0.99)
+      if (all(diff(sort(taus_sampled)) >= min_dist)) break
+    }
+  } else {
+    taus_sampled <- taus_fixed
   }
   
   clock_indices <- 1:N_clocks
@@ -909,7 +925,7 @@ simulate_dataset = function(N_events, N_clocks, mutation_density, pi, coverage, 
     clock_indices <- c(clock_indices, sample(1:N_clocks, N_events - N_clocks, replace = TRUE))
   }
   clock_indices <- sample(clock_indices)  
-
+  
   taus_clust <- taus_sampled[clock_indices]
   taus_events <- sapply(taus_clust, function(t) {
     rnorm(1, mean = t, sd = sigma_tau)
@@ -1061,7 +1077,7 @@ simulate_dataset = function(N_events, N_clocks, mutation_density, pi, coverage, 
     peaks <- get_clonal_peaks(k, pi)
     
     p_vec <- peaks[mult$no.chrs.bearing.mut]
-
+    
     muts$DP <- rpois(n = N_mutations, lambda = coverage)
     muts$DP[muts$DP == 0] <- 1
     muts$NV <- rbinom(n = N_mutations, size = muts$DP, prob = p_vec)
@@ -1973,4 +1989,16 @@ plot_cnaqc_choose_K <- function(x, K, chromosomes = paste0('chr', c(1:22)), add_
 }
 
 
-
+get_segment_clusters <- function(seg_probs) {
+  # Convert to matrix if needed
+  if (is.vector(seg_probs) || is.list(seg_probs)) {
+    seg_probs <- matrix(unlist(seg_probs), 
+                        ncol = length(unique(gsub(".*,(\\d+)\\].*", "\\1", names(seg_probs)))))
+  }
+  
+  # Assign each segment to the cluster with highest probability
+  data.frame(
+    segment_id = seq_len(nrow(seg_probs)),
+    cluster_id = max.col(seg_probs, ties.method = "first")
+  )
+}

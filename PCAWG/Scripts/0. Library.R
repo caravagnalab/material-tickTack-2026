@@ -123,14 +123,18 @@ clustering = function(df, class_colors){
     "rep" = numeric()
   )
   for (i in 1:50){
+    
+    mat_norm_df <- as.data.frame(mat_norm)
+    k_max = min(10, nrow(mat_norm_df %>% distinct()) -1 )
+    
     # p_elbow <- fviz_nbclust(mat_norm, kmeans, method = "wss", k.max = 10) +
-      # labs(title = "Elbow method")
-    res_elbow <- fviz_nbclust(mat_norm, kmeans, method = "wss", k.max = 10)
+    # labs(title = "Elbow method")
+    res_elbow <- fviz_nbclust(mat_norm, kmeans, method = "wss", k.max = k_max)
     wss <- res_elbow$data$y
     # wss_df[[as.character(i)]] = wss
     wss_df = rbind(
       wss_df,
-      data.frame("k" = 1:10, "value" = wss, "rep" = rep(i, 10))
+      data.frame("k" = 1:k_max, "value" = wss, "rep" = rep(i, k_max))
     )
     distances = diff(diff(wss))
     k_opt = which.max(distances[2:length(distances)]) + 1

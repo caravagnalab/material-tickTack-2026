@@ -2,14 +2,15 @@
 library(dplyr)
 library(ggplot2)
 library(tidyr)
-dir = "~/Docs/GitHub/material-tickTack-2026/PCAWG"
+dir = "../../../material-tickTack-2026/PCAWG"
+# dir = "~/Docs/GitHub/material-tickTack-2026/PCAWG"
 drivers = readRDS(paste0(dir, "/Data/Drivers.rds")) 
 # %>% select(
 #   "segment_id","gene","karyotype","sample_id",
 #   "mutatation_status","mult_estimate",
 #   "timed", "sample" ,"clock_mean" , "clock_rank" ,"class",
 #   "best_K", "IntoGen_cancer_type") 
-
+drivers <- drivers %>% mutate(mutatation_status = mutation_status)
 ## 1. Frequency of amplified drivers per ttype (colored if mutated)
 drivers %>%
   filter(timed == "TRUE", mutatation_status!="CI_M", class == "Classic") %>%
@@ -30,7 +31,7 @@ drivers %>%
   facet_wrap(~IntoGen_cancer_type, scales = "free")+
   theme_minimal()+
   theme(axis.text.x = element_text(angle = 90, hjust = 1))+
-  ggtitle("Frequency of Amplified drivers")+xlabs("")+ylab("")
+  ggtitle("Frequency of Amplified drivers")+xlab("")+ylab("")
 
 drivers %>%
   filter(timed == "TRUE", mutatation_status!="CI_M", class == "HM") %>%
@@ -47,6 +48,6 @@ drivers %>%
   facet_wrap(~IntoGen_cancer_type, scales = "free")+
   theme_minimal()+
   theme(axis.text.x = element_text(angle = 90, hjust = 1))+
-  ggtitle("Frequency of Amplified drivers (HM)")+xlabs("")+ylab("")
+  ggtitle("Frequency of Amplified drivers (HM)")+xlab("")+ylab("")
 
 ## 3. Timing of amplified drivers (coloured if mutated)

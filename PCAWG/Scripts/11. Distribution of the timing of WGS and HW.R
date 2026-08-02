@@ -1,8 +1,10 @@
 library(dplyr)
 library(tidyverse)
 library(ggpubr)
-Segments <- readRDS("~/Docs/GitHub/material-tickTack-2026/PCAWG/Data/Segments.rds")
-Samples <- readRDS("~/Docs/GitHub/material-tickTack-2026/PCAWG/Data/Samples.rds")
+# Segments <- readRDS("~/Docs/GitHub/material-tickTack-2026/PCAWG/Data/Segments.rds")
+# Samples <- readRDS("~/Docs/GitHub/material-tickTack-2026/PCAWG/Data/Samples.rds")
+Segments <- readRDS("../Data/Segments.rds")
+Samples <- readRDS("../Data/Samples.rds")
 
 
 counts <- Samples %>% filter(!is.na(IntoGen_cancer_type)) %>%
@@ -33,6 +35,87 @@ ggplot(counts,
     values = alpha(c("Classic" = "darkgrey", "HM" = "steelblue", "WGD" = "firebrick"), 1),
     name = "Class"
   ) + theme(axis.text.x = element_text(angle=90, hjust=1))
+
+
+# make donuts
+# --- Data (replace with real counts) ---
+data_all <- tibble(
+  class = factor(c("Classic", "WGD", "HM"), levels = c("Classic", "WGD", "HM")),
+  n     = c(Samples %>% filter(class == "Classic") %>% nrow(),
+            Samples %>% filter(class == "WGD") %>% nrow(),
+            Samples %>% filter(class == "HM") %>% nrow())
+)
+
+# --- Colors ---
+class_colors <- c("Classic" = "#888780", "WGD" = "#B03A2E", "HM" = "#2E86C1")
+
+# --- Donut function ---
+make_donut <- function(df, title, subtitle) {
+  df <- df %>%
+    mutate(
+      pct     = n / sum(n),
+      pct_lab = paste0(round(pct * 100, 1), "%"),
+      ymax    = cumsum(pct),
+      ymin    = lag(ymax, default = 0),
+      ymid    = (ymin + ymax) / 2,
+      x_lab   = 1.15 * cos(2 * pi * (1 - ymid)),
+      y_lab   = 1.15 * sin(2 * pi * (1 - ymid))
+    )
+  
+  ggplot(df) +
+    geom_rect(
+      aes(xmin = 3, xmax = 4.2, ymin = ymin, ymax = ymax, fill = class),
+      color = "white", linewidth = 0.6
+    ) +
+    geom_text(
+      aes(x = 3.6, y = ymid, label = pct_lab),
+      size = 3.2, fontface = "bold", color = "white"
+    ) +
+    annotate("text", x = 0, y = 0, label = subtitle,
+             size = 3, color = "grey50", hjust = 0.5, vjust = 0.5) +
+    scale_fill_manual(values = class_colors, name = "Class") +
+    coord_polar(theta = "y", start = 0, direction = -1) +
+    xlim(0, 4.5) +
+    labs(title = title) +
+    theme_void(base_size = 12) +
+    theme(
+      plot.title    = element_text(hjust = 0.5, face = "bold", size = 13,
+                                   margin = margin(b = 4)),
+      legend.position = "none",
+      plot.margin   = margin(10, 20, 10, 20)
+    )
+}
+
+# --- Build plots ---
+n_tot = data_all$n %>% sum()
+p_all <- make_donut(data_all, "All tumor types", paste0("n = ", n_tot))
+# p_brca <- make_donut(data_brca, "BRCA",          "n = 207")
+
+# --- Shared legend ---
+p_legend <- ggplot(data_all, aes(x = 1, y = n, fill = class)) +
+  geom_col() +
+  scale_fill_manual(
+    values = class_colors,
+    name   = "Class",
+    guide  = guide_legend(
+      keywidth  = unit(0.35, "cm"),
+      keyheight = unit(0.35, "cm"),
+      label.theme = element_text(size = 10)
+    )
+  ) +
+  theme_void() +
+  theme(legend.position = "right")
+
+legend_only <- cowplot::get_legend(p_legend)
+
+# --- Combine ---
+# final <- (p_all | p_brca | patchwork::wrap_elements(legend_only)) +
+final <- (p_all | patchwork::wrap_elements(legend_only)) +
+  plot_layout(widths = c(1, 1, 0.35))
+
+final
+
+
 
 counts %>% filter(total > 10) %>%
   mutate(f = n / total) %>% filter(class == "HM") %>%
@@ -286,10 +369,10 @@ p <- ggplot(df_plot_data, aes(x = x_pos, y = clock_mean, color = class)) +
   # ) +
   # annotation_logticks(sides = "l") +
   labs(
-    title = "Tumor Mutational Burden across Cancer Types",
+    title = "Time of the copy number events across Cancer Types (fpr HM we are timing the HM cluster)",
     #subtitle = paste0("n = ", nrow(tmb_plot_data), " samples | WGS (~", GENOME_SIZE_MB, " Mb)"),
     x = "Cancer Type",
-    y = "TMB (mutations / Mb)",
+    y = "Median Clock",
     # caption = "Ordered by median n_snvs | Lines = median per k group"
   ) +
   theme_bw(base_size = 12) +

@@ -23,7 +23,7 @@ info_fit_best_K  <- readRDS(paste0("/orfeo/cephfs/scratch/cdslab/scocomello/mate
 info_fit <- info_fit %>% left_join(info_fit_best_K %>% dplyr::select(sample, best_K) %>% distinct(),
                                    by = join_by(sample))
 
-pdf(paste0(output_dir, "all_fit_VAFecdf_ncomp5.pdf"), width = 20, height = 8)
+pdf(paste0(output_dir, "subsample_all_fit_VAF_ncomp5.pdf"), width = 20, height = 8)
 
 lapply(1:nrow(info_fit), function(i){
   
@@ -32,8 +32,8 @@ lapply(1:nrow(info_fit), function(i){
   res <- readRDS(paste0(inference_results_dir,fit$sample,".rds"))
   res$ttype <- fit$ttype
   
-  p <- tickTack::plot_cnaqc_choose_K(res,fit$best_K, add_VAF_ecdf = TRUE) + plot_annotation(
-    caption = paste0("sample: ", fit$sample,"; ", fit$wgd_status),
+  p <- tickTack::plot_cnaqc_choose_K(res,fit$best_K, add_VAF_hist = TRUE) + plot_annotation(
+    caption = paste0("sample: ", fit$sample,"; ", fit$class),
     theme = theme(
       plot.caption = element_text(size = 12, hjust = 0) )) # & theme(text = element_text(size = 15))
   
@@ -59,7 +59,7 @@ lapply(1:nrow(info_fit), function(i){
   ) 
   
   print(p + theme(aspect.ratio = 1))
-  ggsave(paste0(plot_dir,"/",fit$sample,"_ecdf.pdf"), plot = p, width = 13, height =10, units="in", dpi=300)
+  ggsave(paste0(plot_dir,"/",fit$sample,"_VAF.pdf"), plot = p, width = 13, height =10, units="in", dpi=300)
   
 })
 
