@@ -92,3 +92,6 @@ PCAWG/Fit/plot_5components/PCAWG/Fit/SBS_data/alpha_muts.txt
 # WIP
 ProCESS/
 simulations/complex_segments_with_gritic/
+simulations/out/
+simulations/err/
+simulations/
