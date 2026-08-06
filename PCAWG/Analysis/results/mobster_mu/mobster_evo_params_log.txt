@@ -1,0 +1,402 @@
+Run started: 2026-07-21 14:51:33.849864
+ITER 1) Sample: 0009b464-b376-4fbc-8a56-da538269a02f has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 2) Sample: 0040b1b6-b07a-4b6e-90ef-133523eaf412 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 3) Sample: 00b9d0e6-69dc-4345-bffd-ce32880c8eef has tail with evolutionary parameters
+mu: 6.489 and exponent: 1.639 
+ITER 4) Sample: 00c27940-c623-11e3-bf01-24c6515278c0 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 5) Sample: 00db1b95-8ca3-4cc4-bb46-6b8c8019a7c7 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 6) Sample: 01658141-8398-4585-9f0f-8355dd9b0604 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 7) Sample: 0168a2a6-c3af-4d58-a51c-d33f0fc7876d has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 8) Sample: 01b0848c-ae36-4ade-a3da-d297b003c99f has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 9) Sample: 01c8e465-2b4e-4519-bdef-c3ac06b43eeb has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 10) Sample: 01dc6872-c623-11e3-bf01-24c6515278c0 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 11) Sample: 01df36af-3617-40fc-9892-f54ce433cf71 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 12) Sample: 02917220-6a7a-46a1-8656-907e96bef88e has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 13) Sample: 02e5c36f-5bec-45e2-a048-875653b85ca1 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 14) Sample: 030695f6-c623-11e3-bf01-24c6515278c0 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 15) Sample: 0363fe2c-d765-450e-8b1a-d13a23d9af2a has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 16) Sample: 03ad38a6-0902-4aaa-84a3-91ea88fa9883 has tail with evolutionary parameters
+mu: 3.995 and exponent: 1.648 
+ITER 17) Sample: 03b5268e-881e-49e7-824f-170c3fc8b11b has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 18) Sample: 03c3c692-8a86-4843-85ae-e045f0fa6f88 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 19) Sample: 041e3b42-c623-11e3-bf01-24c6515278c0 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 20) Sample: 046d7386-95c8-4501-9e55-c85bec272a7a has tail with evolutionary parameters
+mu: 2.181 and exponent: 1.664 
+ITER 21) Sample: 04aa6b77-8074-480c-872e-a1a47afa5314 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 22) Sample: 04b9837e-9ab5-4eb9-9a9c-ef49e3a62662 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 23) Sample: 04c09376-8756-41d9-bbca-f464170a8cfb has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 24) Sample: 04db8bef-8777-48ac-bc2e-3c9acb103f48 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 25) Sample: 05070acd-3ec1-44bb-9c32-26d3a483a72a has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 26) Sample: 051cb117-16fd-459e-81e5-002eca2b7eea has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 27) Sample: 0554ffe5-31f7-43f5-8372-2b73c9cf3527 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 28) Sample: 05616329-e7ba-4efd-87b1-d79cd0f7af3d has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 29) Sample: 05780d48-80e7-4d70-b00c-081f8a9519f2 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 30) Sample: 0609b182-0396-4755-b463-10f949c5b8bb has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 31) Sample: 0624eb1d-3aff-4037-a3c5-fc363a9edd02 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 32) Sample: 068f4f69-d2fe-4f25-912e-ca7d4623efb6 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 33) Sample: 06ecd127-6c24-422d-a7fb-bf5aee1b8b7b has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 34) Sample: 07835447-5d7e-4828-80fd-89b063989c9a has tail with evolutionary parameters
+mu: 9.003 and exponent: 1.6 
+ITER 35) Sample: 079bcb09-a075-4313-9a3e-dd67734a8c5d has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 36) Sample: 0831e45e-c623-11e3-bf01-24c6515278c0 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 37) Sample: 08b5d0e4-4661-460e-a9f7-f2e687414711 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 38) Sample: 09508a0d-ebe0-4fa1-b7b2-1710814181cd has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 39) Sample: 0972bfcf-c6c6-48cc-b820-cdfa6279a4f3 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 40) Sample: 0980e7fd-051d-45e9-9ca6-2baf073da4e8 has tail with evolutionary parameters
+mu: 41.143 and exponent: 1.627 
+ITER 41) Sample: 09cb8bc5-13ac-44ac-9b7d-6de143373570 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 42) Sample: 0a9c9db0-c623-11e3-bf01-24c6515278c0 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 43) Sample: 0ab4d782-9a50-48b9-96e4-6ce42b2ea034 has tail with evolutionary parameters
+mu: 357.326 and exponent: 1.233 
+ITER 44) Sample: 0b19bee7-5281-4915-9d98-c20eb3e84ecf has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 45) Sample: 0b29c893-03bf-4131-b192-c14a2788d411 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 46) Sample: 0bbc7ede-5022-4084-925c-d65baaf7abc2 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 47) Sample: 0be08326-c623-11e3-bf01-24c6515278c0 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 48) Sample: 0bfd1043-5142-3662-e050-11ac0c486501 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 49) Sample: 0bfd1043-70fb-d2dc-e050-11ac0c4860cb has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 50) Sample: 0bfd1043-7344-fdd0-e050-11ac0c484cab has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 51) Sample: 0bfd1043-7346-fdd0-e050-11ac0c484cab has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 52) Sample: 0bfd1043-7ebf-aaec-e050-11ac0c482f39 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 53) Sample: 0bfd1043-7ec1-aaec-e050-11ac0c482f39 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 54) Sample: 0bfd1043-7ed6-9ccc-e050-11ac0c481957 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 55) Sample: 0bfd1043-816e-e3e4-e050-11ac0c4860c5 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 56) Sample: 0bfd1043-8170-e3e4-e050-11ac0c4860c5 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 57) Sample: 0bfd1043-8172-e3e4-e050-11ac0c4860c5 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 58) Sample: 0bfd1043-8173-e3e4-e050-11ac0c4860c5 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 59) Sample: 0bfd1043-8175-e3e4-e050-11ac0c4860c5 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 60) Sample: 0bfd1043-8177-e3e4-e050-11ac0c4860c5 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 61) Sample: 0bfd1043-817c-e3e4-e050-11ac0c4860c5 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 62) Sample: 0bfd1043-817e-e3e4-e050-11ac0c4860c5 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 63) Sample: 0bfd1043-8180-e3e4-e050-11ac0c4860c5 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 64) Sample: 0bfd1043-8181-e3e4-e050-11ac0c4860c5 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 65) Sample: 0bfd1043-8183-e3e4-e050-11ac0c4860c5 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 66) Sample: 0bfd1043-8187-e3e4-e050-11ac0c4860c5 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 67) Sample: 0bfd1043-8189-e3e4-e050-11ac0c4860c5 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 68) Sample: 0bfd1068-3fc3-a95b-e050-11ac0c4860c3 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 69) Sample: 0bfd1068-3fc5-a95b-e050-11ac0c4860c3 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 70) Sample: 0bfd1068-3fca-a95b-e050-11ac0c4860c3 has tail with evolutionary parameters
+mu: 7.437 and exponent: 1.437 
+ITER 71) Sample: 0bfd1068-3fcd-a95b-e050-11ac0c4860c3 has tail with evolutionary parameters
+mu: 14.885 and exponent: 1.49 
+ITER 72) Sample: 0bfd1068-3fcf-a95b-e050-11ac0c4860c3 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 73) Sample: 0bfd1068-3fd5-a95b-e050-11ac0c4860c3 has tail with evolutionary parameters
+mu: 6.444 and exponent: 1.63 
+ITER 74) Sample: 0bfd1068-3fd8-a95b-e050-11ac0c4860c3 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 75) Sample: 0bfd1068-3fdd-a95b-e050-11ac0c4860c3 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 76) Sample: 0bfd1068-3fdf-a95b-e050-11ac0c4860c3 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 77) Sample: 0bfd1068-3fe1-a95b-e050-11ac0c4860c3 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 78) Sample: 0bfd1068-3fe4-a95b-e050-11ac0c4860c3 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 79) Sample: 0bfd1068-3fe6-a95b-e050-11ac0c4860c3 has tail with evolutionary parameters
+mu: 19.788 and exponent: 1.291 
+ITER 80) Sample: 0bfe2ac9-0aec-c248-e050-11ac0d487e1c has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 81) Sample: 0bfe2ac9-0aee-c248-e050-11ac0d487e1c has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 82) Sample: 0bfe2ac9-0af3-c248-e050-11ac0d487e1c has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 83) Sample: 0bfe2ac9-0af5-c248-e050-11ac0d487e1c has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 84) Sample: 0bfe2ac9-0af8-c248-e050-11ac0d487e1c has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 85) Sample: 0bfe2ac9-0afa-c248-e050-11ac0d487e1c has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 86) Sample: 0bfe2ac9-0afd-c248-e050-11ac0d487e1c has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 87) Sample: 0bfe2ac9-0aff-c248-e050-11ac0d487e1c has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 88) Sample: 0bfebf9f-c779-e57d-e050-11ac0d487827 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 89) Sample: 0bfebf9f-c77d-e57d-e050-11ac0d487827 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 90) Sample: 0bfebf9f-c77f-e57d-e050-11ac0d487827 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 91) Sample: 0bfebf9f-c781-e57d-e050-11ac0d487827 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 92) Sample: 0bfebf9f-c783-e57d-e050-11ac0d487827 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 93) Sample: 0c0038ff-6cc4-b0b0-e050-11ac0d483d73 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 94) Sample: 0c0038ff-6cc6-b0b0-e050-11ac0d483d73 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 95) Sample: 0c0038ff-6cc8-b0b0-e050-11ac0d483d73 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 96) Sample: 0c39c03a-ec84-42c6-be69-8e98bc7a9f5a has tail with evolutionary parameters
+mu: 66.164 and exponent: 1.471 
+ITER 97) Sample: 0cf9bbc2-cbd5-4b64-8d90-cfa416307b39 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 98) Sample: 0d0793c1-df1b-4db1-ba36-adcb960cc0f5 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 99) Sample: 0d569bd5-418d-4d72-87ca-8e14668c2119 has tail with evolutionary parameters
+mu: 14.476 and exponent: 1.428 
+ITER 100) Sample: 0db9309e-7b95-4ae3-b0ed-dfd4f38d11b0 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 101) Sample: 0dd0718d-5ddf-4c59-8c47-0f51303daeb5 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 102) Sample: 0dd39eca-c623-11e3-bf01-24c6515278c0 has tail with evolutionary parameters
+mu: 7.425 and exponent: 1.487 
+ITER 103) Sample: 0e7ac212-0469-4f17-9432-205ab1831257 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 104) Sample: 0e7f46ca-6f5c-4538-b6d6-00af65d57fcf has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 105) Sample: 0e872e0d-4711-4364-a5d0-6beeb6fd3ff2 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 106) Sample: 0ead45d8-d785-4404-8319-2ef951e02e03 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 107) Sample: 0eeafcd6-c623-11e3-bf01-24c6515278c0 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 108) Sample: 0ef92ff8-829f-425a-91d8-c594b6e22a2b has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 109) Sample: 0efee3f3-313b-44eb-b3b0-af975a1ded82 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 110) Sample: 0fbd94b1-bb34-4620-841b-861a0b5e0c12 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 111) Sample: 10bb1a92-901e-4a14-80f4-5e88f997754b has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 112) Sample: 10cb8ac6-c622-11e3-bf01-24c6515278c0 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 113) Sample: 10db2142-c623-11e3-bf01-24c6515278c0 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 114) Sample: 11473a98-d953-45f9-abf5-709b68a4bae8 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 115) Sample: 1157a548-6770-4c89-a84c-bcf6f0e96ea8 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 116) Sample: 1168944c-5451-4a18-8758-88bf5723bdd9 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 117) Sample: 1193a9c4-5aab-4cd7-a690-60c96bd1172d has tail with evolutionary parameters
+mu: 10.897 and exponent: 1.975 
+ITER 118) Sample: 123c9d1c-72ba-4d82-8e57-d5caa52a40ba has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 119) Sample: 124d5b04-4588-44c3-9c00-61e064cf1bdb has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 120) Sample: 12874085-a596-41ae-b4cd-817cb1ebb278 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 121) Sample: 129459c1-38be-45da-bb87-18848c97c544 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 122) Sample: 12ae2ba1-9484-47fe-8a3f-bba94a6abe0c has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 123) Sample: 12d7121a-0345-4808-a819-09d6e3227bd5 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 124) Sample: 12f038e1-00af-4c64-a2e0-9e63323492ef has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 125) Sample: 1327bbd4-a466-4e26-905f-cf91315f1cc8 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 126) Sample: 132f7f2a-b902-4343-aa08-cf6a7af10b9a has tail with evolutionary parameters
+mu: 33.425 and exponent: 1.625 
+ITER 127) Sample: 134c9a92-e91e-4347-a9c4-727279edebb1 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 128) Sample: 13bd2b30-c623-11e3-bf01-24c6515278c0 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 129) Sample: 13c62975-9f5e-4d40-a461-dceab08a31ec has tail with evolutionary parameters
+mu: 10.808 and exponent: 1.458 
+ITER 130) Sample: 140d5fa9-afbe-444e-a7e7-6a4cb4ab2923 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 131) Sample: 141918cd-3e23-45bc-96e1-b208c80f69e7 has tail with evolutionary parameters
+mu: 22.911 and exponent: 1.542 
+ITER 132) Sample: 142b6dbf-c943-4a7d-8ab6-13a975f48d7a has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 133) Sample: 1447c8cb-25d4-4092-8919-4df08f898d2d has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 134) Sample: 145f2b89-8878-4390-b0f6-f09b02fb138a has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 135) Sample: 145f6dbb-9744-44f7-8485-e440689de3fd has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 136) Sample: 14630c19-9ee0-4ab3-9d8b-8c3309d1e7d0 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 137) Sample: 14f41457-25c3-4979-8515-4f33322039a5 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 138) Sample: 153a64ee-6322-4f2e-b3df-77ef7d3a4cf0 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 139) Sample: 154f80bd-984c-4792-bb89-20c4da0c08e0 has tail with evolutionary parameters
+mu: 9.448 and exponent: 1.992 
+ITER 140) Sample: 1558629a-770a-4dcb-b0bf-9a8bcea9d80b has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 141) Sample: 155873b2-e5de-405f-87f6-6de0d238b160 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 142) Sample: 15678c3d-ce61-454d-849e-1d4ca358909b has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 143) Sample: 15895218-c623-11e3-bf01-24c6515278c0 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 144) Sample: 15a93657-0521-430a-a816-bf0842374b75 has tail with evolutionary parameters
+mu: 40.642 and exponent: 1.491 
+ITER 145) Sample: 15e7d981-8c27-4b2b-b4f8-626e22021895 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 146) Sample: 15fd8dc8-c622-11e3-bf01-24c6515278c0 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 147) Sample: 1659bae5-3140-4d05-891c-81b48277b2fc has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 148) Sample: 16d5519e-ecb9-4fc8-81f1-e0e4adf722a8 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 149) Sample: 170ad241-9e24-469b-b7ca-3fd783a89b21 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 150) Sample: 17de5b12-c623-11e3-bf01-24c6515278c0 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 151) Sample: 183b04f5-107f-496c-8e9a-8263dd00cffa has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 152) Sample: 18f5e75e-c623-11e3-bf01-24c6515278c0 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 153) Sample: 19085f7d-e6a6-406f-bd09-520a27e0283d has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 154) Sample: 19b6b9d6-6912-4b85-a4bf-52014bcb170b has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 155) Sample: 19fe27d8-c623-11e3-bf01-24c6515278c0 has tail with evolutionary parameters
+mu: 23.052 and exponent: 1.331 
+ITER 156) Sample: 1a0ef226-41a5-4b56-9078-4b7834f0c976 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 157) Sample: 1a4633c4-72a0-4e30-8c4c-345e04337627 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 158) Sample: 1ac15380-04a2-42dd-8ade-28556a570e80 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 159) Sample: 1ac54c6e-a1e4-4f3b-b4a5-cdb327e0dca6 has tail with evolutionary parameters
+mu: 3.359 and exponent: 1.461 
+ITER 160) Sample: 1bb2bdb7-8a89-4e7d-903d-03a6f8018efb has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 161) Sample: 1bea3a72-3b73-4072-a6bb-96a90119d3ac has tail with evolutionary parameters
+mu: 12.727 and exponent: 2.517 
+ITER 162) Sample: 1c10ab52-01a3-11e4-8395-af1f6b7ba88c has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 163) Sample: 1c1c6494-c623-11e3-bf01-24c6515278c0 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 164) Sample: 1c28e44a-6e6c-44ed-b58a-e3262c0e6759 has tail with evolutionary parameters
+mu: 9.108 and exponent: 1.631 
+ITER 165) Sample: 1cb25b72-3726-4f12-9e22-f5c7e4b05681 has tail with evolutionary parameters
+mu: 13.905 and exponent: 1.309 
+ITER 166) Sample: 1cd0acf2-3116-4dfa-a063-0a435b9f6da3 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 167) Sample: 1d0617e8-2725-4411-b50f-e46ea1d43242 has tail with evolutionary parameters
+mu: 9.591 and exponent: 1.469 
+ITER 168) Sample: 1d1eeba2-4d7b-4380-b0b6-26d246bc4158 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 169) Sample: 1d325d84-a3a0-4802-9842-76cb21cecb1c has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 170) Sample: 1d4a091d-fe65-49c0-8810-5a95243b108a has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 171) Sample: 1daefc49-5248-4948-87ce-0ec19a248ef9 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 172) Sample: 1db83e80-bdf7-4d8d-8008-bd8406d641fc has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 173) Sample: 1df8939c-c622-11e3-bf01-24c6515278c0 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 174) Sample: 1e181878-c640-4e91-a620-3fc4b08a4de1 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 175) Sample: 1e2dcbcc-771c-43c5-8c8d-e0eb77cb3494 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 176) Sample: 1eb37b28-fac2-477a-88b3-e04291a07926 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 177) Sample: 1f967003-82d6-4932-a445-24fc25723594 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 178) Sample: 1fdab6a6-7346-4229-aa8d-5dbd258f0c60 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 179) Sample: 2009e5e7-1796-445b-8677-46b3804fe0bf has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 180) Sample: 2045c788-9ea8-4ea5-a5e3-65fc16a62adb has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 181) Sample: 209a9b10-7129-48fe-a899-d14ba17efe6f has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 182) Sample: 20d1b88b-3ff6-4201-a748-6a993500c652 has tail with evolutionary parameters
+mu: 14.518 and exponent: 1.585 
+ITER 183) Sample: 20e02396-e676-412d-9724-44a428919cdb has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 184) Sample: 21205681-a0c7-48d0-81d4-0b7ef31158cf has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 185) Sample: 21b1a37f-e91e-4ce1-83cf-bb89b8d0fb35 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 186) Sample: 221d0290-c623-11e3-bf01-24c6515278c0 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 187) Sample: 228fb827-c05e-494c-8a21-e1d925e100cb has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 188) Sample: 22d67778-61fc-4f15-95b8-7e7c6cc7112b has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 189) Sample: 22edd867-dcd6-42b5-92bb-025ceb84b106 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 190) Sample: 23d77176-dfed-4bee-ac96-9934377d8d81 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 191) Sample: 23eb72d8-c622-11e3-bf01-24c6515278c0 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 192) Sample: 241abdfd-e6de-4830-a233-4bbc5f622725 has tail with evolutionary parameters
+mu: 63.282 and exponent: 1.578 
+ITER 193) Sample: 2439ec74-1713-4d47-a5d9-886f69dddcb6 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 194) Sample: 25103371-28ac-4f43-b0e2-2d376d0dcb84 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 195) Sample: 25224aa0-cfdd-48ec-92e5-8f3992a3e574 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 196) Sample: 2564a262-03e8-467b-9ea2-f3ab38d75ae1 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 197) Sample: 25c32aca-6738-43ef-a103-243f2f9a3b43 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 198) Sample: 25cf7449-8c5b-403e-aa75-e2af158598e8 has tail with evolutionary parameters
+mu: 29.871 and exponent: 1.467 
+ITER 199) Sample: 25e20393-752b-4796-9001-0e22ee04c586 has no tail | error: No tail detected,
+           evolutionary inference not possible 
+ITER 200) Sample: 25f07374-313a-4100-9a60-3d21d2988fca has tail with evolutionary parameters
+mu: 11.43 and exponent: 1.311 
+Run finished: 2026-07-21 17:05:28.996952

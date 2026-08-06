@@ -1,8 +1,0 @@
-Warning message:
-package ‘tidyverse’ was built under R version 4.4.1 
-Tumour type: LUAD
-✔ Loading bascule. Support : <https://caravagnalab.github.io/bascule/>
-Error in load_sbs96(file.path(out_data_tt, "early"), project) : 
-  Missing SBS96 matrix: /orfeo/cephfs/scratch/cdslab/gsantacatterina/material-tickTack-2026/PCAWG/Analysis_results/Signatures_time//LUAD/early/output/SBS/PCAWG.SBS96.all
-Did stage 01_partition_and_matrix.R run for this tumour type?
-Execution halted
